@@ -23,16 +23,19 @@ public class AgentController {
 
     @PostMapping("/first-register")
     public ResponseEntity<ResponseDto> firstRegister(@RequestBody UserDto userDto) {
+        
         if (userDto == null || userDto.getAgent() == null) {
-            return ResponseEntity.badRequest().body(new ResponseDto(
-                "Invalid data: user or agent is missing.",
-                null, HttpStatus.BAD_REQUEST.value(), new Date()
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(
+                "Invalid data: User or agent is missing.",
+                null, 
+                HttpStatus.BAD_REQUEST.value(), 
+                new Date()
             ));
         }
 
-        Optional<UserDto> registeredUser = agentServiceImpl.registerAgentAndUser(userDto);
+        Optional<UserDto> userRegistered = agentServiceImpl.registerAgentAndUser(userDto);
 
-        if (registeredUser.isEmpty()) {
+        if (userRegistered.isEmpty()) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto(
                 "Agent and user registration failed.",
                 null, HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date()
@@ -40,9 +43,9 @@ public class AgentController {
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(
-            "The agent " + registeredUser.get().getAgent().getLastname() + ", " + 
-            registeredUser.get().getAgent().getName() + " and the user " + 
-            registeredUser.get().getNick() + " have been created successfully.",
+            "The agent " + userRegistered.get().getAgent().getLastname() + ", " + 
+            userRegistered.get().getAgent().getName() + " and the user " + 
+            userRegistered.get().getNick() + " have been created successfully.",
             null, HttpStatus.CREATED.value(), new Date()
         ));
     }

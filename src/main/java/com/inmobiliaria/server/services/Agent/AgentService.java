@@ -8,8 +8,4 @@ import com.inmobiliaria.server.dto.UserDto;
 public interface AgentService {
 
     public Optional<UserDto> registerAgentAndUser(UserDto userDto);
-    public List<Agent> createAgentList();
-    public List<Agent> getByLastname(String lastname);
-    public Optional<Agent> getByIdentificationNumber(String identificationNumber);
-    public Optional<Agent> getByEmail(String email);
 }

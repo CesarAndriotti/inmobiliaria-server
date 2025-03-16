@@ -1,10 +1,8 @@
 package com.inmobiliaria.server.services.UserType;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.inmobiliaria.server.dto.UserTypeDto;
 import com.inmobiliaria.server.models.UserType;
 import com.inmobiliaria.server.repositories.UserType.UserTypeRepository;
@@ -16,27 +14,19 @@ public class UserTypeServiceImpl implements UserTypeService{
     UserTypeRepository userTypeRepository;
 
     @Override
-    public List<UserType> getAllUserTypes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllUserTypes'");
-    }
+    public Optional<UserTypeDto> registerUserType(UserTypeDto userTypeDto) {
 
-    @Override
-    public Optional<UserType> registerUserType(UserTypeDto userTypeDto) {
+        UserType userTypeToRegister = new UserType(userTypeDto.getId(), userTypeDto.getType());
+        
+        try {
 
-        UserType savedUserType = userTypeRepository.save(userTypeDto);
-        return Optional.of(savedUserType);
-    }
+            UserType newUserType = userTypeRepository.save(userTypeToRegister);
+            UserTypeDto newUserTypeDto = new UserTypeDto(newUserType.getId(), newUserType.getType());
+            return Optional.of(newUserTypeDto);
 
-    @Override
-    public Optional<UserType> getUserTypesById(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserTypesById'");
-    }
-
-    @Override
-    public void deleteUserTypes(Integer id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUserTypes'");
+        } catch (Exception e) {
+            
+            return Optional.empty();
+        }
     }
 }

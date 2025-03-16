@@ -1,8 +1,6 @@
 package com.inmobiliaria.server.services.User;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -55,14 +53,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         } catch (Exception e) {
             
-            //logger.error("Error al guardar el agente: {}", e.getMessage());
-
-            // Lanza una excepción personalizada o una generica si es necesario
             throw new RuntimeException("No se pudo registrar el agente. Por favor, intente nuevamente. " +e.getMessage());
         }
-
-        //System.out.println(userDto);
-        //return userDto;
     }    
 }
 
