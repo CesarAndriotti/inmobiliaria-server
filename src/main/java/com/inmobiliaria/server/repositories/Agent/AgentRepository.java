@@ -8,7 +8,7 @@ import com.inmobiliaria.server.models.Agent;
 import java.sql.Date;
 
 @Repository
-public interface AgentRepository extends CrudRepository <Agent, Integer>{
+public interface AgentRepository extends CrudRepository<Agent, Integer> {
 
     List<Agent> findAll();
     List<Agent> findByName(String name);
@@ -17,9 +17,10 @@ public interface AgentRepository extends CrudRepository <Agent, Integer>{
 
     Optional<Agent> findById(int id);
     Optional<Agent> findByPhoneNumber(String phoneNumber);
-
     Optional<Agent> findByIdentificationNumber(String identificationNumber);
     Optional<Agent> findByEmail(String email);
     Optional<Agent> findByAgentRegistration(String agentRegistration);
-    Agent save(Agent agent);
+
+    @Override
+    <S extends Agent> S save(S agent); // Ajuste para mayor flexibilidad en el guardado
 }

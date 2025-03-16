@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.inmobiliaria.server.controllers.AddressController;
-import com.inmobiliaria.server.repositories.Agent.AgentRepository;
 import com.inmobiliaria.server.security.JwtRequestFilter;
 
 @Configuration
@@ -32,7 +30,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 
             .requestMatchers(
-                "/api/agents/first-register"
+                "/api/agents/first-register",
+                "/api/usertypes/register"
             ).permitAll()
 
                 .anyRequest().permitAll() //.authenticated()

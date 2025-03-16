@@ -19,26 +19,45 @@ import jakarta.transaction.Transactional;
 public class AgentServiceImpl implements AgentService {
 
     @Autowired
-    AgentRepository agentRepository;
+    private AgentRepository agentRepository;
+
     @Autowired
-    AddressRepository addressRepository;
+    private AddressRepository addressRepository;
+
     @Autowired
-    UserServiceImpl userServiceImpl;
+    private UserServiceImpl userServiceImpl;
 
     @Override
     @Transactional
-    public UserDto registerAgent(UserDto userDto) {
+    public Optional<UserDto> registerAgentAndUser(UserDto userDto) {
+        
+        if (userDto == null || userDto.getAgent() == null) {
+            return Optional.empty();
+        }
 
-        addressRepository.save(userDto.getAgent().getAddress());
-        Agent firstAgent = userDto.getAgent();
-        Agent savedAgent = agentRepository.save(firstAgent);
-        UserType userType = new UserType();
-        userType.setId(1);
-        userDto.setUser_type(userType);
-        userDto.setAgent(savedAgent);
-        UserDto newUserDto = userServiceImpl.registerUser(userDto);
+        try {
+            // Guardar la dirección asociada al agente
+            addressRepository.save(userDto.getAgent().getAddress());
 
-        return newUserDto; 
+            // Guardar el agente
+            Agent firstAgent = userDto.getAgent();
+            Agent savedAgent = agentRepository.save(firstAgent);
+
+            // Asignar tipo de usuario antes de guardarlo
+            UserType userType = new UserType();
+            userType.setId(1);
+            userDto.setUser_type(userType);
+            userDto.setAgent(savedAgent);
+
+            // Registrar el usuario después de haber guardado el agente
+            UserDto newUserDto = userServiceImpl.registerUser(userDto);
+
+            return Optional.of(newUserDto);
+        } catch (Exception e) {
+            // Loggear la excepción para diagnóstico
+            System.err.println("Error registering agent and user: " + e.getMessage());
+            return Optional.empty();
+        }
     }
 
     @Override
