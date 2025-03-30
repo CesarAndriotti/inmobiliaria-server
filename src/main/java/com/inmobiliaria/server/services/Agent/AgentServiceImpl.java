@@ -1,6 +1,9 @@
 package com.inmobiliaria.server.services.Agent;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.inmobiliaria.server.dto.AgentDto;
@@ -87,6 +90,13 @@ public class AgentServiceImpl implements AgentService {
             
             return Optional.empty();
         }          
+    }
+
+    public List<AgentDto> getAgentList() {
+        
+        List<Agent> agentList = agentRepository.findAll();
+        
+        return agentList.stream().map(agentMapper::ToAgentDto).collect(Collectors.toList()); 
     }
 }
 

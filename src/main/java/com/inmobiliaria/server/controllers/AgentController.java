@@ -1,6 +1,7 @@
 package com.inmobiliaria.server.controllers;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import com.inmobiliaria.server.dto.UserDto;
 import com.inmobiliaria.server.services.Agent.AgentServiceImpl;
 import org.springframework.web.bind.annotation.PutMapping;
 import com.inmobiliaria.server.exceptions.BadRequestException;
+import com.inmobiliaria.server.models.Agent;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,11 +32,14 @@ public class AgentController {
     ObjectMapper objectMapper = new ObjectMapper();
 
     @GetMapping("/show-list")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    public ResponseEntity<List<AgentDto>> showAgentList() {
+
+        List<AgentDto> agentList = agentServiceImpl.getAgentList();
+
+        return ResponseEntity.ok(agentList);
+    
     }
     
-
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> firstRegister(@RequestBody UserDto userDto) {
         
