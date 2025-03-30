@@ -30,8 +30,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 
             .requestMatchers(
-                "/api/agents/first-register",
-                "/api/usertypes/register"
+                "/api/agents/register",
+                "/api/usertypes/register",
+                "/api/agents/update"
             ).permitAll()
 
                 .anyRequest().permitAll() //.authenticated()

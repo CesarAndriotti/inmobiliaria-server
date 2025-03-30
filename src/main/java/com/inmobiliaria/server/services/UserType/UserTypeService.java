@@ -5,5 +5,7 @@ import com.inmobiliaria.server.dto.UserTypeDto;
 
 public interface UserTypeService{
 
+    
     Optional<UserTypeDto> registerUserType(UserTypeDto userTypeDto);
+    Optional<UserTypeDto> updateUserType(UserTypeDto userTypeDto);
 }

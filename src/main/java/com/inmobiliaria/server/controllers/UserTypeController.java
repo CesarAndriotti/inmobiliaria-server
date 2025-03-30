@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/api/usertypes")
@@ -53,5 +55,38 @@ public class UserTypeController {
                 new Date()
             ));
         }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateUserType(@RequestBody UserTypeDto userTypeDto) {
+        
+        if (userTypeDto == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(
+
+                "",
+                null,
+                HttpStatus.BAD_REQUEST.value(),
+                new Date()
+            ));
+        }
+
+        Optional<UserTypeDto> userTypeUpdated = userTypeServiceImpl.updateUserType(userTypeDto);
+
+        if (userTypeUpdated.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto(
+
+                "",
+                null,
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                new Date()
+            ));
+        }
+        
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseDto(
+            "Success: The userType has been updated successfully",
+            null,
+            HttpStatus.ACCEPTED.value(),
+            new Date()
+        ));
     }
 }

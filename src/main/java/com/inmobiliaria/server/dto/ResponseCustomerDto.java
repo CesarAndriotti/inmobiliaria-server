@@ -1,5 +1,6 @@
 package com.inmobiliaria.server.dto;
 
+import com.inmobiliaria.server.models.Address;
 import com.inmobiliaria.server.models.Customer;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +20,7 @@ public class ResponseCustomerDto {
     private String phoneNumber;
     private String email;
     private CustomerTypeDto customerType;
-    private AddressDto address;
+    private Address address;
 
     public ResponseCustomerDto(Customer customer) {
 
@@ -31,7 +32,7 @@ public class ResponseCustomerDto {
         this.phoneNumber = customer.getPhoneNumber();
         this.email = customer.getEmail();
 
-        this.address = new AddressDto(customer.getAddress());  
+        this.address = customer.getAddress();  
         this.customerType = new CustomerTypeDto(customer.getCustomerType().getId(), customer.getCustomerType().getType());
     }
 }

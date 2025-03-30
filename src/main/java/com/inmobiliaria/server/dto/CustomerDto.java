@@ -1,10 +1,6 @@
 package com.inmobiliaria.server.dto;
 
-import java.sql.Date;
-
 import com.inmobiliaria.server.models.Address;
-import com.inmobiliaria.server.models.CustomerType;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +18,5 @@ public class CustomerDto {
     private String phoneNumber;
     private String email;
     private CustomerTypeDto customerType;
-    private AddressDto address;
+    private Address address;
 }

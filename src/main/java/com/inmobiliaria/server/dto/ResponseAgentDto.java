@@ -1,5 +1,6 @@
 package com.inmobiliaria.server.dto;
 
+import com.inmobiliaria.server.models.Address;
 import com.inmobiliaria.server.models.Agent;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,7 @@ public class ResponseAgentDto {
     private String agentRegistration;
     private String profilePhoto;
     private AgentStateDto agentState;
-    private AddressDto address;
+    private Address address;
 
     public ResponseAgentDto(Agent agent) {
 
@@ -37,6 +38,6 @@ public class ResponseAgentDto {
         this.agentState = new AgentStateDto();
         this.agentState.setId(agent.getAgentState().getId());
         this.agentState.setState(agent.getAgentState().getState());
-        this.address = new AddressDto(agent.getAddress());  
+        this.address = agent.getAddress();  
     }
 }

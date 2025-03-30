@@ -22,5 +22,5 @@ public interface AgentRepository extends CrudRepository<Agent, Integer> {
     Optional<Agent> findByAgentRegistration(String agentRegistration);
 
     @Override
-    <S extends Agent> S save(S agent); // Ajuste para mayor flexibilidad en el guardado
+    <S extends Agent> S save(S agent); 
 }

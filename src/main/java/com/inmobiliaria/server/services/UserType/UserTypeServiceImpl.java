@@ -13,6 +13,8 @@ public class UserTypeServiceImpl implements UserTypeService{
     @Autowired
     UserTypeRepository userTypeRepository;
 
+    private static final UserTypeMapper userTypeMapper = UserTypeMapper.INSTANCE;
+
     @Override
     public Optional<UserTypeDto> registerUserType(UserTypeDto userTypeDto) {
 
@@ -29,4 +31,14 @@ public class UserTypeServiceImpl implements UserTypeService{
             return Optional.empty();
         }
     }
+
+    @Override
+    public Optional<UserTypeDto> updateUserType(UserTypeDto userTypeDto) {
+        
+        UserType userTypeToModify = userTypeMapper.ToUserType(userTypeDto);
+        UserType userTypeUpdated = userTypeRepository.save(userTypeToModify); 
+        UserTypeDto newUserType = userTypeMapper.ToUserTypeDto(userTypeUpdated);
+        return Optional.of(newUserType);
+    }
+    
 }

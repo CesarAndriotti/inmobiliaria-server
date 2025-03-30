@@ -10,4 +10,7 @@ public interface AgentStateRepository extends CrudRepository <AgentState, Intege
 
     @Override
     List<AgentState> findAll();
+    @Override
+    <S extends AgentState> S save(S agentState);
+        
 }
