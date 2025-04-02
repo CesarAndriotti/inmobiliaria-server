@@ -8,4 +8,5 @@ public interface UserTypeService{
     List<UserType> showUserTypeList();
     UserType registerUserType(UserType userType);
     UserType updateUserType(UserType userType);
+    Integer deleteUserType(Integer id);
 }

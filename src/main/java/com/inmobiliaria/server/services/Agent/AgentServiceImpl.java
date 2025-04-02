@@ -1,14 +1,10 @@
 package com.inmobiliaria.server.services.Agent;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.inmobiliaria.server.models.Agent;
-import com.inmobiliaria.server.models.AgentState;
 import com.inmobiliaria.server.models.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inmobiliaria.server.MessageConstants;
@@ -20,8 +16,6 @@ import com.inmobiliaria.server.repositories.Address.AddressRepository;
 import com.inmobiliaria.server.repositories.Agent.AgentRepository;
 import com.inmobiliaria.server.repositories.User.UserRepository;
 import com.inmobiliaria.server.services.User.UserServiceImpl;
-import com.inmobiliaria.server.utils.HashUtility;
-
 import jakarta.transaction.Transactional;
 
 @Service

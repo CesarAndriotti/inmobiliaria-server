@@ -35,7 +35,10 @@ public class SecurityConfig {
                 "/api/agents/register",
                 "/api/agents/update",
                 "/api/agents/show-list",
-                "/api/usertypes/register"
+                "/api/usertypes/register",
+                "api/usertypes/show-list",
+                "api/usertypes/update",
+                "api/usertypes/delete"
             ).permitAll()
 
                 .anyRequest().permitAll() //.authenticated()

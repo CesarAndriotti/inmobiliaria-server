@@ -13,5 +13,5 @@ public interface UserTypeRepository extends JpaRepository <UserType, Integer> {
     List<UserType> findAll();
     Optional<UserType> findById(Integer id);
     <S extends UserType> S save(S userType);
-    void delete(UserType entity);
+    void deleteById(Integer id); 
 }

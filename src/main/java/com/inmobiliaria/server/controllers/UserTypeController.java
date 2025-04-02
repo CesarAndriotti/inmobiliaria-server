@@ -3,10 +3,8 @@ package com.inmobiliaria.server.controllers;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import com.inmobiliaria.server.MessageConstants;
 import com.inmobiliaria.server.dto.ResponseDto;
-import com.inmobiliaria.server.models.User;
 import com.inmobiliaria.server.models.UserType;
 import com.inmobiliaria.server.services.UserType.UserTypeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -125,16 +124,17 @@ public class UserTypeController {
         ));
     }
 
-    public ResponseEntity<User> deleteUserType(@RequestBody UserType userType){
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDto> deleteUserType(@RequestBody UserType userType){
 
-        Integer id = userType.getId();
-        userTypeServiceImpl.deleteUserType(id);
+        Integer idDeleted = userTypeServiceImpl.deleteUserType(userType.getId());
 
-        try {
-            
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        return null;
+        return ResponseEntity.ok(new ResponseDto<>(
+            idDeleted,
+            "",
+            null,
+            1,
+            null
+        ));
     }
 }
