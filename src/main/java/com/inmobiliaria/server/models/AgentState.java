@@ -1,5 +1,7 @@
 package com.inmobiliaria.server.models;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,4 +29,18 @@ public class AgentState {
     public AgentState(String state) {
         this.state = state;
     }
+
+    /*@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AgentState that = (AgentState) o;
+        return Objects.equals(id, that.id) &&
+            Objects.equals(state, that.state);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, state);
+    }*/
 }

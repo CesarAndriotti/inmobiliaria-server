@@ -1,12 +1,13 @@
 package com.inmobiliaria.server.services.User;
 
-import java.util.List;
+import java.util.Optional;
+
 import com.inmobiliaria.server.models.User;
-import com.inmobiliaria.server.dto.UserDto;
 
 public interface UserService {
 
-    public UserDto registerUser(UserDto userDto);
+    public User registerUser(User user);
+    public User findUserNick(String nick);
 }
 
 

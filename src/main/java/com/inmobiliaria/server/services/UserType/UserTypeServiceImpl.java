@@ -1,9 +1,9 @@
 package com.inmobiliaria.server.services.UserType;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.inmobiliaria.server.dto.UserTypeDto;
 import com.inmobiliaria.server.models.UserType;
 import com.inmobiliaria.server.repositories.UserType.UserTypeRepository;
 
@@ -13,32 +13,44 @@ public class UserTypeServiceImpl implements UserTypeService{
     @Autowired
     UserTypeRepository userTypeRepository;
 
-    private static final UserTypeMapper userTypeMapper = UserTypeMapper.INSTANCE;
-
-    @Override
-    public Optional<UserTypeDto> registerUserType(UserTypeDto userTypeDto) {
-
-        UserType userTypeToRegister = new UserType(userTypeDto.getId(), userTypeDto.getType());
+    public List<UserType> showUserTypeList() {
         
         try {
-
-            UserType newUserType = userTypeRepository.save(userTypeToRegister);
-            UserTypeDto newUserTypeDto = new UserTypeDto(newUserType.getId(), newUserType.getType());
-            return Optional.of(newUserTypeDto);
+            List<UserType> userTypeListed = userTypeRepository.findAll();
+            return userTypeListed;
 
         } catch (Exception e) {
             
-            return Optional.empty();
+            return null;
+        } 
+    }
+    
+    @Override
+    public UserType registerUserType(UserType userType) {
+        
+        try {
+
+            UserType newUserType = userTypeRepository.save(userType);
+            return newUserType;
+
+        } catch (Exception e) {
+            
+            return null;
         }
     }
 
     @Override
-    public Optional<UserTypeDto> updateUserType(UserTypeDto userTypeDto) {
+    public UserType updateUserType(UserType userType) {
         
-        UserType userTypeToModify = userTypeMapper.ToUserType(userTypeDto);
-        UserType userTypeUpdated = userTypeRepository.save(userTypeToModify); 
-        UserTypeDto newUserType = userTypeMapper.ToUserTypeDto(userTypeUpdated);
-        return Optional.of(newUserType);
+        UserType userTypeUpdated = userTypeRepository.save(userType); 
+        return userTypeUpdated;
     }
+
+    public Optional<UserType> deleteUserType(Integer id) {
+         
+
+        return null;
+    }
+
     
 }

@@ -1,9 +1,6 @@
 package com.inmobiliaria.server.models;
 
-import java.sql.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -71,11 +68,38 @@ public class Agent {
 
     @ManyToOne
     @JoinColumn(name = "agent_State_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Agent_Agent_State1")) 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AgentState agentState;
 
     @OneToOne
     @JoinColumn(name = "address_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Agent_Address1")) 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Address address;         
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Address address;  
+    /* 
+    @Override
+    public boolean equals(Object o) {
+        
+        if (this == o) return true; 
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Agent agent = (Agent) o;  
+        
+        return Objects.equals(id, agent.id) && 
+            Objects.equals(name, agent.name) &&
+            Objects.equals(lastname, agent.lastname) &&
+            Objects.equals(identificationNumber, agent.identificationNumber) && 
+            Objects.equals(dateOfBirth.toString(), agent.dateOfBirth.toString()) &&
+            Objects.equals(phoneNumber, agent.phoneNumber) &&
+            Objects.equals(email, agent.email) &&
+            Objects.equals(agentRegistration, agent.agentRegistration) &&
+            Objects.equals(profilePhoto, agent.profilePhoto) &&
+            Objects.equals(agentState, agent.agentState) &&
+            Objects.equals(address, agent.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastname, identificationNumber, dateOfBirth, phoneNumber, email, agentRegistration, profilePhoto, agentState, address);
+    }
+        */
 }

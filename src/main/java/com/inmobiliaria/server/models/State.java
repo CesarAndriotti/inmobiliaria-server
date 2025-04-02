@@ -1,5 +1,7 @@
 package com.inmobiliaria.server.models;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -37,4 +39,19 @@ public class State {
     @ManyToOne
     @JoinColumn(name = "country_id", nullable = false, foreignKey = @ForeignKey(name = "fk_State_Country1")) 
     private Country country;
+
+    /*@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        State state = (State) o;
+        return Objects.equals(id, state.id) &&
+            Objects.equals(name, state.name) &&
+            Objects.equals(country, state.country); // Asegúrate de que `country` también tenga equals()
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, country);
+    }*/
 }

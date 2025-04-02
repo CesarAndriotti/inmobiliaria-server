@@ -1,11 +1,11 @@
 package com.inmobiliaria.server.services.UserType;
 
-import java.util.Optional;
-import com.inmobiliaria.server.dto.UserTypeDto;
+import java.util.List;
+import com.inmobiliaria.server.models.UserType;
 
 public interface UserTypeService{
 
-    
-    Optional<UserTypeDto> registerUserType(UserTypeDto userTypeDto);
-    Optional<UserTypeDto> updateUserType(UserTypeDto userTypeDto);
+    List<UserType> showUserTypeList();
+    UserType registerUserType(UserType userType);
+    UserType updateUserType(UserType userType);
 }

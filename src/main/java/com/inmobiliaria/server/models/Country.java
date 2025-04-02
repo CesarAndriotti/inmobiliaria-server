@@ -9,6 +9,9 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 
 @Entity
@@ -33,4 +36,19 @@ public class Country {
 
     @Column(name = "code", nullable = false, length = 60)
     private String code;
+
+    /*@Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Country country = (Country) o;
+        return Objects.equals(id, country.id) &&
+            Objects.equals(name, country.name) &&
+            Objects.equals(code, country.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, code);
+    }*/
 }
