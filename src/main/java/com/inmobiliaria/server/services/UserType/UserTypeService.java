@@ -1,6 +1,7 @@
 package com.inmobiliaria.server.services.UserType;
 
 import java.util.List;
+
 import com.inmobiliaria.server.models.UserType;
 
 public interface UserTypeService{

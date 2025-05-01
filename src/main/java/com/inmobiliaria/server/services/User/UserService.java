@@ -1,13 +1,12 @@
 package com.inmobiliaria.server.services.User;
 
-import java.util.Optional;
-
+import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.models.User;
 
 public interface UserService {
 
-    public User registerUser(User user);
-    public User findUserNick(String nick);
+    //public User findUserNick(String nick);
+    public User registerUserAndAgent(User user) throws CustomException;
 }
 
 

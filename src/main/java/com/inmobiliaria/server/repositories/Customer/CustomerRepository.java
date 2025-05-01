@@ -18,5 +18,7 @@ public interface CustomerRepository extends CrudRepository <Customer, Integer>{
 
     Optional<Customer> findByIdentificationNumber(String identificationNumber);
     Optional<Customer> findByEmail(String email);
-    Customer save(Customer Customer);
+    @Override
+    <S extends Customer> S save(S entity);
+    Optional<Customer> findByIdentificationNumberOrPhoneNumberOrEmail(String identificationNumber, String phoneNumber, String email);
 }

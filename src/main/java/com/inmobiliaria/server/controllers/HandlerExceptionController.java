@@ -16,7 +16,7 @@ public class HandlerExceptionController {
 
         ResponseDto errorDto = new ResponseDto();
         errorDto.setDate(new Date());
-        errorDto.setError(ex.getMessage());
+        errorDto.setError(null);
         errorDto.setMessage("No encontrado");
         errorDto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 

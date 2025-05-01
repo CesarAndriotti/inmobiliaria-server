@@ -38,18 +38,4 @@ public class City {
     @JoinColumn(name = "state_id", nullable = false, foreignKey = @ForeignKey(name = "fk_City_State1")) 
     private State state;
 
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        City city = (City) o;
-        return Objects.equals(id, city.id) &&
-            Objects.equals(name, city.name) &&
-            Objects.equals(state, city.state); // Asegúrate de que `state` también tenga equals()
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, state);
-    }*/
 }

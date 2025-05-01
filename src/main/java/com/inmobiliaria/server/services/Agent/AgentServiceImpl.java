@@ -3,138 +3,59 @@ package com.inmobiliaria.server.services.Agent;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 import com.inmobiliaria.server.models.Agent;
-import com.inmobiliaria.server.models.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.inmobiliaria.server.MessageConstants;
-import com.inmobiliaria.server.exceptions.ConflictException;
-import com.inmobiliaria.server.exceptions.InternalServerErrorException;
-import com.inmobiliaria.server.models.Address;
-import com.inmobiliaria.server.models.UserType;
+import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.repositories.Address.AddressRepository;
 import com.inmobiliaria.server.repositories.Agent.AgentRepository;
-import com.inmobiliaria.server.repositories.User.UserRepository;
-import com.inmobiliaria.server.services.User.UserServiceImpl;
 import jakarta.transaction.Transactional;
 
 @Service
 public class AgentServiceImpl implements AgentService {
 
     @Autowired
+    private Environment env;
+    @Autowired
     private AgentRepository agentRepository;
     @Autowired
     private AddressRepository addressRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private UserServiceImpl userServiceImpl;
 
     @Override
-    public List<Agent> getAgentList() {
-
+    public List<Agent> getAgentList() throws CustomException {
+        
         try {
-            List<Agent> agentList = agentRepository.findAll();
-            return agentList; 
-            
-        } catch (Exception e) {
-            
-            throw new InternalServerErrorException(e.getMessage());
+            List<Agent> agents = agentRepository.findAll();
+            return agents;
+        } 
+        catch(InternalServerError e){
+
+            throw new CustomException(env.getProperty("http.server.internal-server"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     @Transactional
-    public User firstRegisterAgentAndUser(User user) {
-
-        try {
-            Address newAddress = addressRepository.save(user.getAgent().getAddress());
-            Agent agentToRegister = user.getAgent();
-            agentToRegister.setAddress(newAddress);
-            Agent newAgent = agentRepository.save(agentToRegister);
-            User newUser = userServiceImpl.registerUser(user);
-            UserType userType = new UserType();
-            userType.setId(1);
-            user.setUser_type(userType);
-            user.setAgent(newAgent);
-
-            return newUser;
-
-        } catch (Exception e) {
-            
-            throw new InternalServerErrorException(MessageConstants.ERROR_INTERNAL_SERVER + " " + e.getMessage());
-        }
-    }
-
-    @Override
-    @Transactional
-    public User registerAgentAndUser(User user) {
-    
-        try {
-
-            Address newAddress = addressRepository.save(user.getAgent().getAddress());
-            Agent agentToRegister = user.getAgent();
-
-            Optional<Agent> agentDatabase = agentRepository.findByIdentificationNumber(agentToRegister.getIdentificationNumber());
-
-            if (agentDatabase.isPresent()) {
-                throw new ConflictException("The agent is already registred. "+MessageConstants.EXISTING_DATA);
-            }
-
-            agentToRegister.setAddress(newAddress);
-            
-            Optional<User> userDatabase = userRepository.findByNick(user.getNick());
-
-            if (userDatabase.isPresent()) {
-                throw new ConflictException("The user is already registred. "+MessageConstants.EXISTING_DATA);
-            }
-
-            Agent newAgent = agentRepository.save(agentToRegister);
-            User newUser = userServiceImpl.registerUser(user);
-            UserType userType = new UserType();
-            userType.setId(user.getUser_type().getId());
-            user.setUser_type(userType);
-            user.setAgent(newAgent);
-
-            return newUser;
-
-        } catch (ConflictException e) {
-            
-            throw e;
-        }
-        catch (Exception e) {
-            
-            throw new InternalServerErrorException(MessageConstants.ERROR_INTERNAL_SERVER+". "+e.getMessage());
-        }   
-    }
-
-    @Override
-    @Transactional
-    public Agent updateAgentData(Agent agent){
+    public Agent updateAgentData(Agent agent) throws CustomException{
         
         try {
             Optional <Agent> agentDataBase = agentRepository.findById(agent.getId());
             
-            if (!agent.equals(agentDataBase.get())) { 
-                if (!agent.getAddress().equals(agentDataBase.get().getAddress())) {
-                    addressRepository.save(agent.getAddress());
-                }
+            if (!agent.equals(agentDataBase.get()) || !agent.getAddress().equals(agentDataBase.get().getAddress())) { 
+                addressRepository.save(agent.getAddress());
                 Agent agentUpdated = agentRepository.save(agent);
 
                 return agentUpdated;
             }
             else{
-                throw new ConflictException(MessageConstants.IDENTICAL_DATA);
+                throw new CustomException("Identical Data", HttpStatus.CONFLICT);
             }
-
-        } catch (ConflictException e) {
-            
-            throw e;
         }
-        catch (Exception e) {
-            
-            throw new InternalServerErrorException(MessageConstants.ERROR_INTERNAL_SERVER+". "+e.getMessage());
-        }        
+        catch(InternalServerError e){
+            throw new CustomException(env.getProperty("http.server.internal-server"), HttpStatus.INTERNAL_SERVER_ERROR);
+        } 
     }
 }
 

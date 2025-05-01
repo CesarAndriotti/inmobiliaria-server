@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
         @Index(name = "fk_Address_City1_idx", columnList = "City_Id"),
     }
 )
-public class Address {
+public class Address { 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,19 +43,9 @@ public class Address {
     @JoinColumn(name = "city_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Address_City1"))
     private City city;
 
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Address address = (Address) o;
-        return Objects.equals(id, address.id) &&
-            Objects.equals(streetName, address.streetName) &&
-            Objects.equals(number, address.number) &&
-            Objects.equals(city, address.city);
+    public Address orElseGet(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, streetName, number, city);
-    }*/
 }
