@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +29,24 @@ public class CustomerTypeController {
     
     @Autowired
     CustomerTypeServiceImpl customerTypeServiceImpl;
+    @Autowired
+    Environment env;
 
     @PostMapping("/register")
-    public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST request
+    public ResponseEntity<ResponseDto> postMethodName(@RequestBody CustomerType customerType) throws CustomException {
         
+        if (customerType == null) {
+            throw new CustomException("", HttpStatus.BAD_REQUEST);
+        }
         
-        return entity;
+        CustomerType registerdCustomerType = customerTypeServiceImpl.registerCustomerType(customerType);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(
+
+            registerdCustomerType,
+            "",
+            HttpStatus.CREATED.value()
+        ));
     }
     
     @GetMapping("/show-list")

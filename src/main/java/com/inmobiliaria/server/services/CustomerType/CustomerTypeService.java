@@ -9,9 +9,9 @@ public interface CustomerTypeService {
 
     public List<CustomerType> showCustomerTypeList() throws CustomException;
     public CustomerType getCustomerTypeById(Integer id) throws CustomException;
-    public CustomerType registerCustomerType(CustomerTypeService customerType) throws CustomException;
+    public CustomerType registerCustomerType(CustomerType customerType) throws CustomException;
 
-    public CustomerType updateCustomerType(CustomerTypeService customerType) throws CustomException;
+    public CustomerType updateCustomerType(CustomerType customerType) throws CustomException;
 
     public CustomerType deleteCustomerType(Integer id) throws CustomException;
 }
