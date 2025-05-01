@@ -1,7 +1,6 @@
 package com.inmobiliaria.server;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,10 +35,17 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults()).csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
                 
-            .requestMatchers("/api/auth/login", "/api/users/register", "/api/usertypes/register").permitAll()
+            .requestMatchers("/api/auth/login").permitAll()
     
             //Rutas protegidas que requieren autenticación
-            .requestMatchers("/api/users/**", "/api/agents/**", "/api/customers/**").permitAll()
+            .requestMatchers(
+                "/api/users/**", 
+                "/api/agents/**", 
+                "/api/customers/**", 
+                "/api/usertypes/**", 
+                "api/customertypes/**"
+                
+                ).permitAll()
         
             //Rutas con roles específicos
             //.requestMatchers("/api/agents/**").hasRole("Administrator")
