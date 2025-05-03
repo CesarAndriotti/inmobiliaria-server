@@ -1,9 +1,9 @@
 package com.inmobiliaria.server.services.CustomerType;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.repositories.CustomerType.CustomerTypeRepository;
@@ -14,12 +14,13 @@ public class CustomerTypeServiceImpl implements CustomerTypeService{
 
     @Autowired
     CustomerTypeRepository customerTypeRepository;
+    @Autowired
+    Environment env;
     
     @Override
     public List<CustomerType> showCustomerTypeList() throws CustomException{
         
         List<CustomerType> customerTypeList = customerTypeRepository.findAll();
-
         return customerTypeList;
     }
 
@@ -39,13 +40,23 @@ public class CustomerTypeServiceImpl implements CustomerTypeService{
 
     @Override
     public CustomerType updateCustomerType(CustomerType customerType) throws CustomException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateCustomerType'");
+        
+        try {
+            CustomerType updatedCustomerType = customerTypeRepository.save(customerType);
+            return updatedCustomerType;
+        } catch (Exception e) {
+            throw new CustomException(env.getProperty("database.entity-not-found"), HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
-    public CustomerType deleteCustomerType(Integer id) throws CustomException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCustomerType'");
+    public Integer deleteCustomerType(Integer id) throws CustomException {
+        
+        try {
+            customerTypeRepository.deleteById(id);
+            return id;
+        } catch (Exception e) {
+            throw new CustomException(env.getProperty("database.entity-not-found"), HttpStatus.NOT_FOUND);
+        }
     }
 }

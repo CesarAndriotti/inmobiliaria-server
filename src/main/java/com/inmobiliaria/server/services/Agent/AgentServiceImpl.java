@@ -32,7 +32,10 @@ public class AgentServiceImpl implements AgentService {
         } 
         catch(InternalServerError e){
 
-            throw new CustomException(env.getProperty("http.server.internal-server"), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new CustomException(
+                env.getProperty("http.server.internal-server"), 
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -50,11 +53,23 @@ public class AgentServiceImpl implements AgentService {
                 return agentUpdated;
             }
             else{
-                throw new CustomException("Identical Data", HttpStatus.CONFLICT);
+                
+                String fieldName = "";
+                if (agent.getAddress().equals(agentDataBase.get().getAddress())) fieldName = "Address.";
+                else fieldName = "Agent.";
+
+                throw new CustomException(
+                    env.getProperty("database.identical-data" + " Data: " + fieldName), 
+                    HttpStatus.CONFLICT
+                );
             }
         }
         catch(InternalServerError e){
-            throw new CustomException(env.getProperty("http.server.internal-server"), HttpStatus.INTERNAL_SERVER_ERROR);
+            
+            throw new CustomException(
+                env.getProperty("http.server.internal-server"), 
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
         } 
     }
 }

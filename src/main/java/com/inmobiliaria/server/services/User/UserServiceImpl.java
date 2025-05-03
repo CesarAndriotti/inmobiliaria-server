@@ -21,10 +21,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.models.Address;
+import com.inmobiliaria.server.models.Agent;
 import com.inmobiliaria.server.models.User;
 import com.inmobiliaria.server.repositories.Address.AddressRepository;
 import com.inmobiliaria.server.repositories.Agent.AgentRepository;
@@ -69,20 +69,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 
             if (userRepository.findByNick(user.getNick()).isPresent()) {
                 throw new CustomException(
-                    "The nick already exists",
+                    env.getProperty("database.existing-data" + " Data: " + user.getNick()),
                     HttpStatus.CONFLICT
                 );
             }
             
-            if (agentRepository.findByIdentificationNumberOrEmailOrAgentRegistrationOrPhoneNumber(
+            Optional<Agent> agentDatabase = agentRepository.findByIdentificationNumberOrEmailOrAgentRegistrationOrPhoneNumber(
                 user.getAgent().getIdentificationNumber(), 
                 user.getAgent().getEmail(),
                 user.getAgent().getAgentRegistration(), 
-                user.getAgent().getPhoneNumber()).isPresent()) {
-                throw new CustomException(
-                    "The identification number or email already exists", 
-                    HttpStatus.CONFLICT
-                );
+                user.getAgent().getPhoneNumber());
+
+            if (agentDatabase.isPresent()) {
+                
+                String fieldName = "";
+                Agent agent = agentDatabase.get();
+                if (agent.getIdentificationNumber().equals(agent.getIdentificationNumber())) fieldName = "Identification Number.";
+                if (agent.getEmail().equals(agent.getEmail())) fieldName = "Email.";
+                if (agent.getAgentRegistration().equals(agent.getAgentRegistration())) fieldName = "Agent Registration.";
+                if (agentDatabase.get().getPhoneNumber().equals(user.getAgent().getPhoneNumber())) fieldName = "Phone Number.";
+                if (fieldName!="") {
+                        throw new CustomException(
+                        env.getProperty("database.existing-data" + " Data: " + fieldName),
+                        HttpStatus.CONFLICT
+                    );
+                }
             }
 
             Address address = user.getAgent().getAddress();
@@ -99,30 +110,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
             return newUser;
         } 
-        catch(ConversionFailedException e){
-
-            throw new CustomException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
         catch(InternalServerError e){
-
-            throw new CustomException(env.getProperty("http.server.internal-server"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch(NullPointerException e){
-
-            throw new CustomException(env.getProperty("http.server.internal-server"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch(InvalidDataAccessApiUsageException e){
-
-            throw new CustomException(env.getProperty("http.server.internal-server"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch(DataIntegrityViolationException e){
-
-            throw new CustomException(env.getProperty("database.data-integrity-violation"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        catch(UnexpectedRollbackException e){
             
-            throw new CustomException(env.getProperty("database.data-integrity-violation"), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            throw new CustomException(
+                env.getProperty("http.server.internal-server"), 
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        } 
     }
 
     public Map<String, Object> authenticateUser(String nick, String password) throws CustomException {

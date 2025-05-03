@@ -13,5 +13,5 @@ public interface CustomerTypeService {
 
     public CustomerType updateCustomerType(CustomerType customerType) throws CustomException;
 
-    public CustomerType deleteCustomerType(Integer id) throws CustomException;
+    public Integer deleteCustomerType(Integer id) throws CustomException;
 }
