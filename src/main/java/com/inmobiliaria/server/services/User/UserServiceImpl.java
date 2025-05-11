@@ -2,8 +2,11 @@ package com.inmobiliaria.server.services.User;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.env.Environment;
@@ -183,6 +186,40 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getUser_type().getType().toUpperCase()))
         );
     }
-}
+
+    /*public List<User> propertiesFilter(Map<String, String> filter, List<User> users) {
+        
+        for (Map.Entry<String, String> filtro : filter.entrySet()) {
+        String clave = filtro.getKey();
+        String valor = filtro.getValue().toLowerCase();
+
+        switch (clave) {
+            case "name":
+            users = users.stream()
+                    .filter(e -> e.getName() != null && e.getName().toLowerCase().contains(valor))
+                    .collect(Collectors.toList());
+                break;
+            case "lastname":
+            users = users.stream()
+                    .filter(e -> e.getLastname() != null && e.getLastname().toLowerCase().contains(valor))
+                    .collect(Collectors.toList());
+                break;
+            case "email":
+            users = users.stream()
+                    .filter(e -> e.getEmail() != null && e.getEmail().toLowerCase().contains(valor))
+                    .collect(Collectors.toList());
+                break;
+            case "sector":
+            
+            default:
+                // Ignorar filtros desconocidos o podrías lanzar excepción si lo preferís
+                break;
+        }
+    }
+
+        return user;
+    }*/
+        
+    }
 
 

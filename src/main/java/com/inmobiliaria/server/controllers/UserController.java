@@ -48,4 +48,17 @@ public class UserController {
             HttpStatus.CREATED.value()
         ));
     }        
+
+    /*public ResponseEntity<ResponseDto> searchUserByProperties(@RequestParam Map<String, String> filter, List<User> users) throws CustomException{
+
+        if (filter.isEmpty()) {
+            throw new CustomException(env.getProperty("http.client.bad-request"), HttpStatus.BAD_REQUEST);
+        }
+        List<User> userList = userServiceImpl.propertiesFilter(filter, users);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(
+            null,
+            "",
+            HttpStatus.OK.value()
+        ));
+    }*/
 }

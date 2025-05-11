@@ -43,7 +43,8 @@ public class SecurityConfig {
                 "/api/agents/**", 
                 "/api/customers/**", 
                 "/api/usertypes/**", 
-                "api/customertypes/**"
+                "api/customertypes/**",
+                "/api/propertystates/**"
                 
                 ).permitAll()
         
