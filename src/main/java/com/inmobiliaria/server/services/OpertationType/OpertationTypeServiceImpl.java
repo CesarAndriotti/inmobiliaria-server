@@ -21,8 +21,8 @@ public class OpertationTypeServiceImpl implements OpertationTypeService{
 
     @Override
     public List<OperationType> getAllOpertationTypes() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllOpertationTypes'");
+        
+        return operationTypeRepository.findAll();
     }
 
     @Override
