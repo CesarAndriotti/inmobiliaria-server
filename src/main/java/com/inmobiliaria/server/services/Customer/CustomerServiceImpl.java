@@ -7,10 +7,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
-
 import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.models.Address;
-import com.inmobiliaria.server.models.Agent;
 import com.inmobiliaria.server.models.Customer;
 import com.inmobiliaria.server.repositories.Address.AddressRepository;
 import com.inmobiliaria.server.repositories.Customer.CustomerRepository;

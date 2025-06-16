@@ -12,10 +12,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
-@RequestMapping("/api/propertystates")
+@RequestMapping("/api/property-states")
 public class PropertyStateController {
 
     @Autowired
@@ -24,7 +27,7 @@ public class PropertyStateController {
     PropertyStateServiceImpl propertyStateServiceImpl;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto> RegisterPropertyState(@RequestBody PropertyState propertystate) throws CustomException {
+    public ResponseEntity<ResponseDto> postPropertyState(@RequestBody PropertyState propertystate) throws CustomException {
        
         if (propertystate == null || propertystate.getState() == "") {
             
@@ -36,11 +39,18 @@ public class PropertyStateController {
 
         PropertyState registeredPropertyState = propertyStateServiceImpl.registerPropertyState(propertystate);
         
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
             registeredPropertyState,
             env.getProperty("http.success.ok."),
             HttpStatus.OK.value()
         ));
+    }
+    
+    @GetMapping("/show-list")
+    public String getMethodName(@RequestParam String param) {
+
+
+        return new String();
     }
     
 }

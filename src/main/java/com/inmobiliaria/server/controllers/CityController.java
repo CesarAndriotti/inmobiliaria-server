@@ -10,15 +10,14 @@ import com.inmobiliaria.server.services.City.CityServiceImpl;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cites")
 public class CityController {
 
     @Autowired
     CityServiceImpl cityService;
 
-    @GetMapping("/cities-list")
-    public List<City> citiesList(){
-  
+    @GetMapping("/show-list")
+    public List<City> getCitiesList(){
         return cityService.getAllCities();
     }
 }

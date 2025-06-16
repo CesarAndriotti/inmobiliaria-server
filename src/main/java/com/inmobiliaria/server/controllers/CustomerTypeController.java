@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/customertypes")
+@RequestMapping("/api/customer-types")
 public class CustomerTypeController {
     
     @Autowired
@@ -30,7 +30,7 @@ public class CustomerTypeController {
     Environment env;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto> postMethodName(@RequestBody CustomerType customerType) throws CustomException {
+    public ResponseEntity<ResponseDto> postCustomerType(@RequestBody CustomerType customerType) throws CustomException {
         
         if (customerType == null) {
             throw new CustomException(env.getProperty("http.client.bad-request"), HttpStatus.BAD_REQUEST);
@@ -38,7 +38,7 @@ public class CustomerTypeController {
         
         CustomerType registerdCustomerType = customerTypeServiceImpl.registerCustomerType(customerType);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto<>(
 
             registerdCustomerType,
             "",
@@ -52,7 +52,7 @@ public class CustomerTypeController {
         List<CustomerType> customerTypeList = customerTypeServiceImpl.showCustomerTypeList();
         
         
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
 
             customerTypeList,
             "",
@@ -73,7 +73,7 @@ public class CustomerTypeController {
 
         CustomerType updatedCustomerType = customerTypeServiceImpl.updateCustomerType(customerType);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
 
             updatedCustomerType,
             env.getProperty("http.success.accepted"),
@@ -94,7 +94,7 @@ public class CustomerTypeController {
 
         customerTypeServiceImpl.deleteCustomerType(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
 
             env.getProperty("http.success.ok"),
             HttpStatus.OK.value()

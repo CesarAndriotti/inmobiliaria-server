@@ -14,29 +14,14 @@ import com.inmobiliaria.server.models.Country;
 import com.inmobiliaria.server.services.Country.CountryServiceImpl;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/countries")
 public class CountryController {
 
     @Autowired
     private CountryServiceImpl countryService;
 
-    @GetMapping("/all-countries")
-    public List<Country> countriesList() {
+    @GetMapping("/show-list")
+    public List<Country> getCountriesList() {
         return countryService.getAllCountries();
-    }
-
-    @PostMapping
-    public Optional<Country> createCountry(@RequestBody Country country) {
-        return countryService.saveCountry(country);
-    }
-
-    @GetMapping("/get-country/{id}")
-    public Optional<Country> getCountryById(@PathVariable Integer id) {
-        return countryService.getCountryById(id);
-    }
-
-    @DeleteMapping("/del-country/{id}")
-    public void deleteCountry(@PathVariable Integer id) {
-        countryService.deleteCountry(id);
     }
 }

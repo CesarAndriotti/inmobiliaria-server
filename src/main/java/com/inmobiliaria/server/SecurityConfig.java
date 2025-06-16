@@ -40,11 +40,17 @@ public class SecurityConfig {
             //Rutas protegidas que requieren autenticación
             .requestMatchers(
                 "/api/users/**", 
-                "/api/agents/**", 
+                "/api/agents/**",
+                "/api/agent-states/**", 
+                "/api/cites/**",
+                "/api/countries/**",
                 "/api/customers/**", 
-                "/api/usertypes/**", 
-                "api/customertypes/**",
-                "/api/propertystates/**"
+                "/api/customer-types/**",
+                "/api/property-states/**",
+                "/api/states/**",
+                "/api/users/**",
+                "/api/user-types/**",
+                "api/operation-types/**"
                 
                 ).permitAll()
         
@@ -52,7 +58,7 @@ public class SecurityConfig {
             //.requestMatchers("/api/agents/**").hasRole("Administrator")
         
             //Cualquier otra ruta requiere autenticación
-            .anyRequest().authenticated()
+            .anyRequest().permitAll()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) 

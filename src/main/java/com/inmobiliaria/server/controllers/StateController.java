@@ -8,14 +8,14 @@ import java.util.List;
 import com.inmobiliaria.server.models.State;
 import com.inmobiliaria.server.services.State.StateServiceImpl;
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/states")
 public class StateController {
 
     @Autowired
     StateServiceImpl stateService;
 
-    @GetMapping("/states-list")
-    public List<State> statesList(){
+    @GetMapping("/show-list")
+    public List<State> getStatesList(){
 
         return stateService.getAllStates();
     }

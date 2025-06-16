@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AgentStateController {
     
     @Autowired
-    AgentStateRepository agent_StateRepository;
+    AgentStateRepository agentStateRepository;
 
     @GetMapping("/agent-states")
     public List<AgentState> getAgentStates() {
         
-        return agent_StateRepository.findAll();
+        return agentStateRepository.findAll();
     }
 }

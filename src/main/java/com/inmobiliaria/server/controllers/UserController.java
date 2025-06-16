@@ -23,7 +23,7 @@ public class UserController {
     Environment env;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto> registerUserAndAgent(@RequestBody User user) throws CustomException{
+    public ResponseEntity<ResponseDto> postUserAndAgent(@RequestBody User user) throws CustomException{
         
         if(user == null || user.getAgent() == null || user.getAgent().getAddress() == null 
         || user.getAgent().getAgentState() == null || user.getUser_type() == null){
@@ -41,24 +41,11 @@ public class UserController {
             HttpStatus.INTERNAL_SERVER_ERROR
         );
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto<>(
 
             userRegistered,
             env.getProperty("http.success.created"),
             HttpStatus.CREATED.value()
         ));
     }        
-
-    /*public ResponseEntity<ResponseDto> searchUserByProperties(@RequestParam Map<String, String> filter, List<User> users) throws CustomException{
-
-        if (filter.isEmpty()) {
-            throw new CustomException(env.getProperty("http.client.bad-request"), HttpStatus.BAD_REQUEST);
-        }
-        List<User> userList = userServiceImpl.propertiesFilter(filter, users);
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(
-            null,
-            "",
-            HttpStatus.OK.value()
-        ));
-    }*/
 }

@@ -25,7 +25,7 @@ public class AgentController {
     Environment env;
 
     @GetMapping("/show-list")
-    public ResponseEntity<ResponseDto> showAgentList() throws CustomException {
+    public ResponseEntity<ResponseDto> getAgentList() throws CustomException {
 
         List<Agent> agentList = agentServiceImpl.getAgentList();
         
@@ -37,7 +37,7 @@ public class AgentController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> updateAgentData(@RequestBody Agent agent) throws CustomException {
+    public ResponseEntity<ResponseDto> putAgentData(@RequestBody Agent agent) throws CustomException {
 
         if (agent == null || agent.getAddress() == null || agent.getAgentState() == null) {
             throw new CustomException(
@@ -55,7 +55,7 @@ public class AgentController {
             );
         }
         else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseDto(
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseDto<>(
                 agentUpdated,
                 env.getProperty("http.success.accepted"),
                 HttpStatus.ACCEPTED.value()
