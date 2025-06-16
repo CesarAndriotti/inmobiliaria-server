@@ -9,21 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.inmobiliaria.server.dto.ResponseDto;
 import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.models.OperationType;
-import com.inmobiliaria.server.models.UserType;
 import com.inmobiliaria.server.services.OpertationType.OpertationTypeServiceImpl;
-
 import jakarta.persistence.QueryTimeoutException;
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 @RestController
 @RequestMapping("/api/operation-types")
