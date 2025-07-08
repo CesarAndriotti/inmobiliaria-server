@@ -15,6 +15,8 @@ import com.inmobiliaria.server.services.Agent.AgentServiceImpl;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
+//Actualizado
+
 @RestController
 @RequestMapping("/api/agents")
 public class AgentController {
@@ -28,7 +30,7 @@ public class AgentController {
     public ResponseEntity<ResponseDto> getAgentList() throws CustomException {
 
         List<Agent> agentList = agentServiceImpl.getAgentList();
-        
+
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
             agentList,
             env.getProperty("http.success.ok"),
@@ -37,7 +39,7 @@ public class AgentController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseDto> putAgentData(@RequestBody Agent agent) throws CustomException {
+    public ResponseEntity<ResponseDto> putAgent(@RequestBody Agent agent) throws CustomException {
 
         if (agent == null || agent.getAddress() == null || agent.getAgentState() == null) {
             throw new CustomException(
@@ -46,21 +48,13 @@ public class AgentController {
             );
         }
         
-        Agent agentUpdated = agentServiceImpl.updateAgentData(agent);
+        Agent agentUpdated = agentServiceImpl.updateAgent(agent);
         
-        if (agentUpdated == null) {
-            throw new CustomException(
-                env.getProperty("http.server.internal-server"), 
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseDto<>(
-                agentUpdated,
-                env.getProperty("http.success.accepted"),
-                HttpStatus.ACCEPTED.value()
-            ));
-        }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new ResponseDto<>(
+            agentUpdated,
+            env.getProperty("http.success.accepted"),
+            HttpStatus.ACCEPTED.value()
+        ));
     }
 }
 

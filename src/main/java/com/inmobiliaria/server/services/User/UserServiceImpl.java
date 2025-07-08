@@ -12,6 +12,7 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -67,16 +68,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User registerUserAndAgent(User user) throws CustomException {
 
         try { 
-            if (userRepository.findFirstUserOrderedById().isEmpty()) user.getUser_type().setId(1);
-            else user.getUser_type().setId(user.getUser_type().getId());
+
+            List<User> userDatabase = userRepository.findAll();
+            if(userDatabase.isEmpty()) user.getUser_type().setId(1);
                 
-            if (userRepository.findByNick(user.getNick()).isPresent()) {
+            boolean nickExists = userDatabase.stream()
+            .anyMatch(u -> u.getNick().equals(user.getNick()));
+
+            if (nickExists) {
                 throw new CustomException(
                     env.getProperty("database.existing-data" + " Data: " + user.getNick()),
                     HttpStatus.CONFLICT
                 );
             }
             
+            /* Hasta aca se comprobó que no exista el usuario */
+
+            /* Ahora si el agent existe quiere decir que usuario ya tiene */
             Optional<Agent> agentDatabase = agentRepository.findByIdentificationNumberOrEmailOrAgentRegistrationOrPhoneNumber(
                 user.getAgent().getIdentificationNumber(), 
                 user.getAgent().getEmail(),

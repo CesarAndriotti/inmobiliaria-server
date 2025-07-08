@@ -6,17 +6,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import com.inmobiliaria.server.models.State;
-import com.inmobiliaria.server.services.State.StateServiceImpl;
+import com.inmobiliaria.server.repositories.State.StateRepository;
+
 @RestController
 @RequestMapping("/api/states")
 public class StateController {
 
     @Autowired
-    StateServiceImpl stateService;
+    StateRepository stateRepository;
 
     @GetMapping("/show-list")
     public List<State> getStatesList(){
 
-        return stateService.getAllStates();
+        return stateRepository.findAll();
     }
 }

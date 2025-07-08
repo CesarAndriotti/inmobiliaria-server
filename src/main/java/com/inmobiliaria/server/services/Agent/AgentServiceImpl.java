@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 import com.inmobiliaria.server.models.Agent;
 import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.repositories.Address.AddressRepository;
@@ -30,47 +30,70 @@ public class AgentServiceImpl implements AgentService {
             List<Agent> agents = agentRepository.findAll();
             return agents;
         } 
-        catch(InternalServerError e){
+        catch(DataAccessException e){
 
             throw new CustomException(
-                env.getProperty("http.server.internal-server"), 
+                env.getProperty("database.access-error")+": "+e.getMessage(), 
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+        catch(Exception e){
+
+            throw new CustomException(
+                env.getProperty("unhandled-exception")+": "+e.getMessage(), 
                 HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
     }
 
+    //EntityNotFoundException para una busqueda con id
+
     @Override
     @Transactional
-    public Agent updateAgentData(Agent agent) throws CustomException{
+    public Agent updateAgent(Agent agent) throws CustomException{
         
         try {
             Optional <Agent> agentDataBase = agentRepository.findById(agent.getId());
-            
-            if (!agent.equals(agentDataBase.get()) || !agent.getAddress().equals(agentDataBase.get().getAddress())) { 
-                addressRepository.save(agent.getAddress());
-                Agent agentUpdated = agentRepository.save(agent);
-
-                return agentUpdated;
-            }
-            else{
-                
-                String fieldName = "";
-                if (agent.getAddress().equals(agentDataBase.get().getAddress())) fieldName = "Address.";
-                else fieldName = "Agent.";
-
+        
+            if (agentDataBase.isEmpty()) {
                 throw new CustomException(
-                    env.getProperty("database.identical-data" + " Data: " + fieldName), 
+                    env.getProperty("database.entity-not-found"),
+                    HttpStatus.NOT_FOUND
+                );
+            }
+
+            Agent existingAgent = agentDataBase.get();
+
+            boolean isSameAgent = agent.equals(existingAgent);
+            boolean isSameAddress = agent.getAddress().equals(existingAgent.getAddress());
+
+            if (isSameAgent && isSameAddress) {
+                
+                throw new CustomException(
+                    env.getProperty("database.identical-data"),
                     HttpStatus.CONFLICT
                 );
             }
-        }
-        catch(InternalServerError e){
-            
+
+            addressRepository.save(agent.getAddress());
+            Agent agentUpdated = agentRepository.save(agent);
+
+            return agentUpdated;
+        } 
+        catch(DataAccessException e){
+
             throw new CustomException(
-                env.getProperty("http.server.internal-server"), 
+                env.getProperty("database.access-error")+": "+e.getMessage(), 
                 HttpStatus.INTERNAL_SERVER_ERROR
             );
-        } 
+        }
+        catch(Exception e){
+
+            throw new CustomException(
+                env.getProperty("unhandled-exception")+": "+e.getMessage(), 
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }
 

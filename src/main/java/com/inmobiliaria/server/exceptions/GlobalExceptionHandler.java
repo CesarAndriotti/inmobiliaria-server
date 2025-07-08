@@ -15,12 +15,12 @@ public class GlobalExceptionHandler {
 
     @Autowired
     private Environment env;
-
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class.getName());
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ExceptionDetails> handleBadRequest(CustomException e) {
 
+        //Desmembramos el custom exception
         int statusCode = e.getHttpStatus().value();
         String message = "";
 
@@ -54,7 +54,8 @@ public class GlobalExceptionHandler {
             default: message = env.getProperty("runtime-exception", "Unexpected error"); break;
         }
         
-        LOG.error(e.getTechnicalMessage(), e);
+        //El exception details va a tener el mensaje para el cliente
+        LOG.error("\n\nTECHNICAL MESSAGE: "+e.getTechnicalMessage()+"\n", e);
         ExceptionDetails exceptionDetails = new ExceptionDetails("ERROR", message);
         e.setExceptionDetails(exceptionDetails);
         return ResponseEntity.status(e.getHttpStatus()).body(exceptionDetails);

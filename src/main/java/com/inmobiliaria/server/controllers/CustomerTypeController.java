@@ -1,7 +1,6 @@
 package com.inmobiliaria.server.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.inmobiliaria.server.dto.ResponseDto;
 import com.inmobiliaria.server.exceptions.CustomException;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+//Actualizado
 
 @RestController
 @RequestMapping("/api/customer-types")
@@ -33,7 +33,10 @@ public class CustomerTypeController {
     public ResponseEntity<ResponseDto> postCustomerType(@RequestBody CustomerType customerType) throws CustomException {
         
         if (customerType == null) {
-            throw new CustomException(env.getProperty("http.client.bad-request"), HttpStatus.BAD_REQUEST);
+            throw new CustomException(
+                env.getProperty("http.client.bad-request"), 
+                HttpStatus.BAD_REQUEST
+            );
         }
         
         CustomerType registerdCustomerType = customerTypeServiceImpl.registerCustomerType(customerType);
@@ -41,21 +44,20 @@ public class CustomerTypeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto<>(
 
             registerdCustomerType,
-            "",
+            env.getProperty("http.success.ok"),
             HttpStatus.CREATED.value()
         ));
     }
     
     @GetMapping("/show-list")
-    public ResponseEntity<ResponseDto> showCustomerTypeList() throws CustomException {
+    public ResponseEntity<ResponseDto> getCustomerTypeList() throws CustomException {
         
-        List<CustomerType> customerTypeList = customerTypeServiceImpl.showCustomerTypeList();
-        
+        List<CustomerType> customerTypeList = customerTypeServiceImpl.getAllCustomerTypes();
         
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
 
             customerTypeList,
-            "",
+            env.getProperty("http.success.ok"),
             HttpStatus.OK.value()
         ));
     }

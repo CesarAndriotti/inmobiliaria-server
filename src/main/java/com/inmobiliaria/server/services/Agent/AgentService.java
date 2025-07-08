@@ -7,5 +7,5 @@ import com.inmobiliaria.server.models.Agent;
 public interface AgentService {
 
     public List<Agent> getAgentList() throws CustomException;
-    public Agent updateAgentData(Agent agent) throws CustomException;
+    public Agent updateAgent(Agent agent) throws CustomException;
 }

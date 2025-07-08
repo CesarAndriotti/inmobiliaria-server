@@ -1,6 +1,5 @@
 package com.inmobiliaria.server.models;
 
-import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -68,11 +67,9 @@ public class Agent {
 
     @ManyToOne
     @JoinColumn(name = "agent_State_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Agent_Agent_State1")) 
-    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private AgentState agentState;
 
     @OneToOne
-    @JoinColumn(name = "address_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Agent_Address1")) 
-    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "address_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Agent_Address1"))
     private Address address;  
 }

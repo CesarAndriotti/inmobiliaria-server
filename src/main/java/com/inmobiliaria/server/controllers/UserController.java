@@ -36,11 +36,6 @@ public class UserController {
         
         User userRegistered = userServiceImpl.registerUserAndAgent(user);
 
-        if (userRegistered == null) throw new CustomException(
-            env.getProperty("database.create-failed"), 
-            HttpStatus.INTERNAL_SERVER_ERROR
-        );
-
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto<>(
 
             userRegistered,

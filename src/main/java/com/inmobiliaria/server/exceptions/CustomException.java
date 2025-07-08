@@ -8,6 +8,7 @@ public class CustomException extends Exception{
     private ExceptionDetails exceptionDetails;
     private HttpStatus httpStatus;
 
+    //El exception details no se contruye, solo se setea
     public CustomException(String message, HttpStatus httpStatus) {
         super(message);
         setTechnicalMessage(message);
