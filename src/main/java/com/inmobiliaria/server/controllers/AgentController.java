@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inmobiliaria.server.dto.ResponseDto;
 import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.models.Agent;
+import com.inmobiliaria.server.models.User;
 import com.inmobiliaria.server.services.Agent.AgentServiceImpl;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-
-//Actualizado
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/api/agents")
@@ -29,7 +29,7 @@ public class AgentController {
     @GetMapping("/show-list")
     public ResponseEntity<ResponseDto> getAgentList() throws CustomException {
 
-        List<Agent> agentList = agentServiceImpl.getAgentList();
+        List<Agent> agentList = agentServiceImpl.getAllAgents();
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
             agentList,
@@ -56,6 +56,28 @@ public class AgentController {
             HttpStatus.ACCEPTED.value()
         ));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<ResponseDto> postUserAndAgent(@RequestBody User user) throws CustomException{
+        
+        if(user == null || user.getAgent() == null || user.getAgent().getAddress() == null 
+        || user.getAgent().getAgentState() == null || user.getUser_type() == null){
+
+            throw new CustomException(
+                env.getProperty("http.client.bad-request"), 
+                HttpStatus.BAD_REQUEST
+            );
+        }
+        
+        User userRegistered = agentServiceImpl.registerAgentAndUser(user);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto<>(
+
+            userRegistered,
+            env.getProperty("http.success.created"),
+            HttpStatus.CREATED.value()
+        ));
+    } 
 }
 
 

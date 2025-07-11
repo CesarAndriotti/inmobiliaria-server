@@ -4,15 +4,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.domain.Sort;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,16 +19,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 import com.inmobiliaria.server.exceptions.CustomException;
-import com.inmobiliaria.server.models.Address;
-import com.inmobiliaria.server.models.Agent;
 import com.inmobiliaria.server.models.User;
 import com.inmobiliaria.server.repositories.Address.AddressRepository;
 import com.inmobiliaria.server.repositories.Agent.AgentRepository;
 import com.inmobiliaria.server.repositories.User.UserRepository;
 import com.inmobiliaria.server.security.JwtUtil;
-import jakarta.transaction.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -62,73 +52,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     JwtUtil jwtUtil;
-
-    @Override
-    @Transactional
-    public User registerUserAndAgent(User user) throws CustomException {
-
-        try { 
-
-            List<User> userDatabase = userRepository.findAll();
-            if(userDatabase.isEmpty()) user.getUser_type().setId(1);
-                
-            boolean nickExists = userDatabase.stream()
-            .anyMatch(u -> u.getNick().equals(user.getNick()));
-
-            if (nickExists) {
-                throw new CustomException(
-                    env.getProperty("database.existing-data" + " Data: " + user.getNick()),
-                    HttpStatus.CONFLICT
-                );
-            }
-            
-            /* Hasta aca se comprobó que no exista el usuario */
-
-            /* Ahora si el agent existe quiere decir que usuario ya tiene */
-            Optional<Agent> agentDatabase = agentRepository.findByIdentificationNumberOrEmailOrAgentRegistrationOrPhoneNumber(
-                user.getAgent().getIdentificationNumber(), 
-                user.getAgent().getEmail(),
-                user.getAgent().getAgentRegistration(), 
-                user.getAgent().getPhoneNumber());
-
-            if (agentDatabase.isPresent()) {
-                
-                String fieldName = "";
-                Agent agent = agentDatabase.get();
-                if (agent.getIdentificationNumber().equals(agent.getIdentificationNumber())) fieldName = "Identification Number.";
-                if (agent.getEmail().equals(agent.getEmail())) fieldName = "Email.";
-                if (agent.getAgentRegistration().equals(agent.getAgentRegistration())) fieldName = "Agent Registration.";
-                if (agentDatabase.get().getPhoneNumber().equals(user.getAgent().getPhoneNumber())) fieldName = "Phone Number.";
-                if (fieldName!="") {
-                        throw new CustomException(
-                        env.getProperty("database.existing-data" + " Data: " + fieldName),
-                        HttpStatus.CONFLICT
-                    );
-                }
-            }
-
-            Address address = user.getAgent().getAddress();
-            Optional <Address> existingAddress = addressRepository.findByStreetnameAndNumber(address.getStreetName(), address.getNumber());
-            
-            if (existingAddress.isPresent()) user.getAgent().setAddress(existingAddress.get());
-            else addressRepository.save(address);
-
-            agentRepository.save(user.getAgent());
-
-            String encryptedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encryptedPassword);
-            User newUser = userRepository.save(user);
-
-            return newUser;
-        } 
-        catch(InternalServerError e){
-            
-            throw new CustomException(
-                env.getProperty("http.server.internal-server"), 
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
-        } 
-    }
 
     public Map<String, Object> authenticateUser(String nick, String password) throws CustomException {
         try {
@@ -194,6 +117,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getUser_type().getType().toUpperCase()))
         );
     }
+
+    @Override
+    public List<User> getAllUsers() throws CustomException {
+
+        try {
+            List<User> usersDatabase = userRepository.findAll();
+            return usersDatabase;
+        } 
+        catch (DataAccessException e) {
+            
+            throw new CustomException(
+                env.getProperty("data.access-error")+": "+e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+        catch(Exception e){
+                throw new CustomException(
+                env.getProperty("unhandled-exception")+": "+e.getMessage(), 
+                HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    @Override
+    public User saveUser(User user) throws CustomException {
+        
+        return userRepository.save(user);
+    }
+
+   
 
     /*public List<User> propertiesFilter(Map<String, String> filter, List<User> users) {
         

@@ -55,8 +55,8 @@ public class GlobalExceptionHandler {
         }
         
         //El exception details va a tener el mensaje para el cliente
-        LOG.error("\n\nTECHNICAL MESSAGE: "+e.getTechnicalMessage()+"\n", e);
-        ExceptionDetails exceptionDetails = new ExceptionDetails("ERROR", message);
+        LOG.error("\n\nTECHNICAL MESSAGE: "+message+ ". " +e.getTechnicalMessage()+"\n", e);
+        ExceptionDetails exceptionDetails = new ExceptionDetails("ERROR", e.getTechnicalMessage());
         e.setExceptionDetails(exceptionDetails);
         return ResponseEntity.status(e.getHttpStatus()).body(exceptionDetails);
     }

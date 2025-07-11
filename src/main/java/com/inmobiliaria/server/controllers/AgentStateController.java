@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-//Actualizado
-
 @RestController
 @RequestMapping("/api/agent-states")
 public class AgentStateController {

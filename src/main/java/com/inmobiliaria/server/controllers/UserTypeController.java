@@ -32,7 +32,7 @@ public class UserTypeController {
     public ResponseEntity<ResponseDto> getUserTypeList() throws CustomException {
 
         try {
-            List<UserType> userTypeListed = userTypeServiceImpl.showUserTypeList();
+            List<UserType> userTypeListed = userTypeServiceImpl.getAllUserTypes();
 
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
                 userTypeListed,

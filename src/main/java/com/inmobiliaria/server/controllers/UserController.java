@@ -22,25 +22,5 @@ public class UserController {
     @Autowired
     Environment env;
 
-    @PostMapping("/register")
-    public ResponseEntity<ResponseDto> postUserAndAgent(@RequestBody User user) throws CustomException{
-        
-        if(user == null || user.getAgent() == null || user.getAgent().getAddress() == null 
-        || user.getAgent().getAgentState() == null || user.getUser_type() == null){
-
-            throw new CustomException(
-                env.getProperty("http.client.bad-request"), 
-                HttpStatus.BAD_REQUEST
-            );
-        }
-        
-        User userRegistered = userServiceImpl.registerUserAndAgent(user);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto<>(
-
-            userRegistered,
-            env.getProperty("http.success.created"),
-            HttpStatus.CREATED.value()
-        ));
-    }        
+           
 }

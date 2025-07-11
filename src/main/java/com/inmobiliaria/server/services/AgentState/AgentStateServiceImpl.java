@@ -47,7 +47,7 @@ public class AgentStateServiceImpl implements AgentStateService{
 
         try {
 
-            Optional<AgentState> agentStateDatabase = agentStateRepository.findById(agentState.getId());
+            Optional<AgentState> agentStateDatabase = agentStateRepository.findByState(agentState.getState());
 
             if (agentStateDatabase.isPresent()) {
                 

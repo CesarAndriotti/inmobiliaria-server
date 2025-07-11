@@ -48,7 +48,7 @@ public class OpertationTypeServiceImpl implements OpertationTypeService{
         
         try {
 
-            Optional<OperationType> operationDatabase = operationTypeRepository.findById(operationType.getId());
+            Optional<OperationType> operationDatabase = operationTypeRepository.findByType(operationType.getType());
 
             if (operationDatabase.isPresent()) {
                 

@@ -7,8 +7,8 @@ import com.inmobiliaria.server.models.UserType;
 
 public interface UserTypeService{
 
-    List<UserType> showUserTypeList() throws CustomException;
-    UserType registerUserType(UserType userType) throws CustomException;
-    UserType updateUserType(UserType userType) throws CustomException;
-    Integer deleteUserType(Integer id) throws CustomException;
+    public List<UserType> getAllUserTypes() throws CustomException;
+    public UserType registerUserType(UserType userType) throws CustomException;
+    public UserType updateUserType(UserType userType) throws CustomException;
+    public void deleteUserType(Integer id) throws CustomException;
 }

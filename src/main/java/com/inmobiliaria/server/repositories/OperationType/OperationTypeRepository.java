@@ -13,5 +13,6 @@ public interface OperationTypeRepository extends CrudRepository <OperationType, 
     public List<OperationType> findAll();
     public <S extends OperationType> S save(S OperationType);
     public Optional<OperationType> findById(int id);
+    public Optional<OperationType> findByType(String type);
     public void deleteById(int id);
 }

@@ -10,8 +10,9 @@ import java.util.Optional;
 @Repository
 public interface UserTypeRepository extends JpaRepository <UserType, Integer> {
 
-    List<UserType> findAll();
-    Optional<UserType> findById(Integer id);
-    <S extends UserType> S save(S userType);
-    void deleteById(Integer id); 
+    public List<UserType> findAll();
+    public Optional<UserType> findById(Integer id);
+    public Optional<UserType> findByType(String type);
+    public <S extends UserType> S save(S userType);
+    public void deleteById(Integer id);
 }

@@ -2,7 +2,6 @@ package com.inmobiliaria.server.repositories.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import com.inmobiliaria.server.models.User;
 import java.util.List;
 import java.util.Optional;

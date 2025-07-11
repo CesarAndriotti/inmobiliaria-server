@@ -17,8 +17,6 @@ import com.inmobiliaria.server.models.Customer;
 import com.inmobiliaria.server.repositories.Customer.CustomerRepository;
 import com.inmobiliaria.server.services.Customer.CustomerServiceImpl;
 
-//Actualizado
-
 @RestController
 @RequestMapping("/api/customers")
 public class CustomerController {
@@ -27,13 +25,11 @@ public class CustomerController {
     Environment env;
     @Autowired
     CustomerServiceImpl customerServiceImpl;
-
     @Autowired
     CustomerRepository customerRepository;
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> postCustomer(@RequestBody Customer customer) throws CustomException {
-        //TODO: process POST request
 
         if(customer == null || customer.getAddress() == null || customer.getCustomerType() == null) 
         { 
@@ -43,20 +39,7 @@ public class CustomerController {
             );
         }
 
-        if (customer.equals(customerServiceImpl.getUserById(customer.getId()))) {
-            
-            throw new CustomException(
-                env.getProperty("data.identical-data"), 
-                HttpStatus.CONFLICT
-            );
-        }
-
         Customer customerRegistered = customerServiceImpl.registerCustomer(customer);
-    
-        if (customerRegistered == null) throw new CustomException(
-            env.getProperty("database.create-failed"), 
-            HttpStatus.CONFLICT
-        );
 
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
             
@@ -86,16 +69,6 @@ public class CustomerController {
             throw new CustomException(
                 env.getProperty("http.client.bad-request"), 
                 HttpStatus.BAD_REQUEST
-            );
-        }
-
-        //Falta Validacion para campos vacios
-
-        if (customer.equals(customerServiceImpl.getUserById(customer.getId()))) {
-            
-            throw new CustomException(
-                env.getProperty("data.identical-data"), 
-                HttpStatus.CONFLICT
             );
         }
 

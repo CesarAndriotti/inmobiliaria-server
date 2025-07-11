@@ -10,5 +10,6 @@ public interface AgentStateRepository extends CrudRepository <AgentState, Intege
     public List<AgentState> findAll();
     public <S extends AgentState> S save(S agentState);
     public Optional<AgentState> findById(int id);
+    public Optional<AgentState> findByState(String type);
     public void deleteById(int id);
 }

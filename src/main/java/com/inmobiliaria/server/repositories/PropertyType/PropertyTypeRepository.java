@@ -10,5 +10,6 @@ public interface PropertyTypeRepository extends CrudRepository <PropertyType, In
     public List<PropertyType> findAll();
     public <S extends PropertyType> S save(S propertyType);
     public Optional<PropertyType> findById(Integer id);
+    public Optional<PropertyType> findByType(String type);
     public void deleteById(int id);
 }

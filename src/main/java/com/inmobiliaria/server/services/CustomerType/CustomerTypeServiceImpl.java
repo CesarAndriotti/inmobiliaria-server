@@ -2,7 +2,6 @@ package com.inmobiliaria.server.services.CustomerType;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
@@ -47,7 +46,7 @@ public class CustomerTypeServiceImpl implements CustomerTypeService{
     public CustomerType registerCustomerType(CustomerType customerType) throws CustomException {
         
         try {
-            Optional<CustomerType> customerTypeDatabase = customerTypeRepository.findById(customerType.getId());
+            Optional<CustomerType> customerTypeDatabase = customerTypeRepository.findByType(customerType.getType());
 
             if (customerTypeDatabase.isPresent()) {
                 

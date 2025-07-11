@@ -25,7 +25,7 @@ public class PropertyStateServiceImpl implements PropertyStateService {
         
         try {
             
-            Optional<PropertyState> propertyStateDatabase = propertyStateRepository.findById(propertyState.getId());
+            Optional<PropertyState> propertyStateDatabase = propertyStateRepository.findByState(propertyState.getState());
             
             if (propertyStateDatabase.isPresent()) {
                 

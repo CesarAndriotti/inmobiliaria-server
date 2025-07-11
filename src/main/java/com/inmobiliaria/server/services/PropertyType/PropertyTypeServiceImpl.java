@@ -24,7 +24,7 @@ public class PropertyTypeServiceImpl implements PropertyTypeService{
         
         try {
             
-            Optional<PropertyType> propertyTypeDatabase = propertyTypeRepository.findById(propertyType.getId());
+            Optional<PropertyType> propertyTypeDatabase = propertyTypeRepository.findByType(propertyType.getType());
 
             if (propertyTypeDatabase.isPresent()) {
                 throw new CustomException(
