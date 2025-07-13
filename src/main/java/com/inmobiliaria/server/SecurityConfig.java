@@ -46,6 +46,7 @@ public class SecurityConfig {
                 "/api/countries/**",
                 "/api/customers/**", 
                 "/api/customer-types/**",
+                "/api/properties/**",
                 "/api/property-states/**",
                 "/api/states/**",
                 "/api/users/**",

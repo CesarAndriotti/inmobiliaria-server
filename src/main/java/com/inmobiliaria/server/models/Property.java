@@ -40,19 +40,19 @@ public class Property {
     private Float total_area;
 
     @Column(nullable = false)
-    private Byte water;
+    private Boolean water;
 
     @Column(nullable = false)
-    private Byte electricity;
+    private Boolean electricity;
 
     @Column(nullable = false)
-    private Byte gas;
+    private Boolean gas;
 
     @Column(nullable = false)
-    private Byte sewer;
+    private Boolean sewer;
 
     @Column(nullable = false)
-    private Byte asphalt;
+    private Boolean asphalt;
 
     @Column(nullable = false, length = 500)
     private String summary;

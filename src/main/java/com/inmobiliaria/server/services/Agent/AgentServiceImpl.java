@@ -9,7 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 import com.inmobiliaria.server.models.Address;
 import com.inmobiliaria.server.models.Agent;
 import com.inmobiliaria.server.models.User;
