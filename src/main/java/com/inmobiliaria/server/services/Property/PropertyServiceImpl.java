@@ -111,7 +111,6 @@ public class PropertyServiceImpl implements PropertyService{
                 );
             }
 
-            //Continuar con la direccion
             Address address = property.getAddress();
             Optional <Address> addressDatabase = addressServiceImpl.getAddressByStreetnameAndNumber(address);
 
