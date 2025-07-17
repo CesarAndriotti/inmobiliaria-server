@@ -51,7 +51,8 @@ public class SecurityConfig {
                 "/api/states/**",
                 "/api/users/**",
                 "/api/user-types/**",
-                "api/operation-types/**"
+                "api/operation-types/**", 
+                "api/owners/**"
                 
                 ).permitAll()
         

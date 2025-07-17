@@ -13,6 +13,7 @@ import com.inmobiliaria.server.models.Address;
 import com.inmobiliaria.server.models.Customer;
 import com.inmobiliaria.server.repositories.Customer.CustomerRepository;
 import com.inmobiliaria.server.services.Address.AddressServiceImpl;
+import com.inmobiliaria.server.services.Owner.OwnerServiceImpl;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -24,6 +25,8 @@ public class CustomerServiceImpl implements CustomerService{
     AddressServiceImpl addressServiceImpl;
     @Autowired
     Environment env;
+    @Autowired
+    OwnerServiceImpl ownerServiceImpl;
 
     @Override
     @Transactional
