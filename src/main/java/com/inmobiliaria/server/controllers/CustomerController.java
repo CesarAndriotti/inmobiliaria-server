@@ -4,8 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.inmobiliaria.server.dto.ResponseDto;
 import com.inmobiliaria.server.exceptions.CustomException;
-
-import java.sql.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import com.inmobiliaria.server.models.Customer;
-import com.inmobiliaria.server.models.Owner;
 import com.inmobiliaria.server.repositories.Customer.CustomerRepository;
 import com.inmobiliaria.server.services.Customer.CustomerServiceImpl;
 
@@ -88,12 +85,5 @@ public class CustomerController {
             env.getProperty("http.success.created"),
             HttpStatus.CREATED.value()
         ));
-    }
-
-    @PostMapping("/owner/register")
-    public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST request
-        
-        return entity;
     }
 }

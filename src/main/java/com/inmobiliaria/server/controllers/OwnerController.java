@@ -26,7 +26,6 @@ public class OwnerController {
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> postOwner(@RequestBody Owner owner) throws CustomException {
         
-        System.out.println("\n\n\n"+owner);
         if (owner == null)  {
             
             throw new CustomException(

@@ -61,10 +61,6 @@ public class Property {
     @JoinColumn(name = "property_Type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Property_Property_Type1"))
     private PropertyType property_type;
 
-    @ManyToOne
-    @JoinColumn(name = "operation_Type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Property_Operation_Type1"))
-    private OperationType operation_type;
-
     @OneToOne
     @JoinColumn(name = "address_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Property_Address1"))
     private Address address;

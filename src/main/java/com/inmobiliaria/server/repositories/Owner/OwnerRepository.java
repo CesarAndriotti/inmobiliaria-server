@@ -9,5 +9,5 @@ import com.inmobiliaria.server.models.Owner;
 public interface OwnerRepository extends CrudRepository<Owner, Integer>{
 
     public <S extends Owner> S save(S entity);
-    public Optional<Owner> findByCustomerIdAndPropertyId(int customerId, int propertyId);
+    public Optional<Owner> findByCustomerIdAndPropertyId(Integer customerId, Integer propertyId);
 }
