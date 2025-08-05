@@ -2,19 +2,20 @@ package com.inmobiliaria.server.services.Property;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import com.inmobiliaria.server.exceptions.CustomException;
 import com.inmobiliaria.server.models.Address;
+import com.inmobiliaria.server.models.Agent;
 import com.inmobiliaria.server.models.Property;
 import com.inmobiliaria.server.repositories.Property.PropertyRepository;
 import com.inmobiliaria.server.services.Address.AddressServiceImpl;
+import com.inmobiliaria.server.services.Agent.AgentServiceImpl;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -24,6 +25,8 @@ public class PropertyServiceImpl implements PropertyService{
     PropertyRepository propertyRepository;
     @Autowired
     AddressServiceImpl addressServiceImpl;
+    @Autowired
+    AgentServiceImpl agentServiceImpl;
     @Autowired 
     Environment env;
 
@@ -99,11 +102,7 @@ public class PropertyServiceImpl implements PropertyService{
                 );
             }
 
-            Property existingProperty = propertyDatabase.get();
-
-            boolean isSameProperty = property.equals(existingProperty);
-
-            if (isSameProperty) {
+            if (property.equals(propertyDatabase.get())) {
                 
                 throw new CustomException(
                     env.getProperty("database.identical-data"),
@@ -113,10 +112,8 @@ public class PropertyServiceImpl implements PropertyService{
 
             Address address = property.getAddress();
             Optional <Address> addressDatabase = addressServiceImpl.getAddressByStreetnameAndNumber(address);
-
-            if (addressDatabase.isPresent()) property.setAddress(addressDatabase.get());
-            else addressServiceImpl.saveAddress(address);
-
+            if (!addressDatabase.equals(address)) property.setAddress(addressDatabase.get());
+            
             return propertyRepository.save(property);
         } 
         catch (DataIntegrityViolationException e) {
@@ -129,11 +126,10 @@ public class PropertyServiceImpl implements PropertyService{
                 env.getProperty("data.access-error")+": "+e.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
-         catch (Exception e) {
+        catch (Exception e) {
             throw new CustomException(
                 env.getProperty("unhadled-error")+": "+e.getMessage(), 
                 HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
