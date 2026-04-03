@@ -20,11 +20,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Price",
+@Table(name = "price",
     
     indexes = {
-        @Index(name = "fk_Price_MoneyType1_idx", columnList = "Money_Type_Id"),
-        @Index(name = "fk_Price_Property1_idx", columnList = "Publication_Id")
+        @Index(name = "fk_price_money_type1_idx", columnList = "money_type_id"),
+        @Index(name = "fk_price_publication1_idx", columnList = "publication_id")
     }
 )
 public class Price {
@@ -34,18 +34,18 @@ public class Price {
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false, precision = 6, scale = 2)
+    @Column(nullable = false, precision = 11, scale = 2)
     private BigDecimal price;
 
     @Column(nullable = false)
     private Float profitPercentage;
 
     @ManyToOne
-    @JoinColumn(name = "property_id", nullable = false, foreignKey = @ForeignKey(name = "fk_Price_Publication1"))
+    @JoinColumn(name = "publication_id", nullable = false, foreignKey = @ForeignKey(name = "fk_price_publication1"))
     private Publication publication;
 
     @ManyToOne
-    @JoinColumn(name = "money_type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Price_MoneyType1"))
+    @JoinColumn(name = "money_type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_price_money_type1"))
     private MoneyType moneyType;
 }
 

@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor  
-@NoArgsConstructor 
-@Table(name="Operation_Type")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "operation_type")
 public class OperationType {
 
     @Id
@@ -23,5 +23,5 @@ public class OperationType {
     private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String type;
+    private String name;
 }

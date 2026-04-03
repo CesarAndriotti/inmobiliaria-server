@@ -18,23 +18,23 @@ import jakarta.persistence.Column;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Country", 
+@Table(name = "country", 
     
     indexes = {
-        @Index(name = "key_Country_Code", columnList = "code")
+        @Index(name = "key_country_code", columnList = "code")
     }
 )
 public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(name = "code", nullable = false, length = 60)
+    @Column(nullable = false, length = 60)
     private String code;
 
 }

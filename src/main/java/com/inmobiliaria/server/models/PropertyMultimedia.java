@@ -19,28 +19,28 @@ import jakarta.persistence.Column;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Property_Multimedia",
+@Table(name = "property_multimedia",
     
     indexes = {
-        @Index(name = "fk_Property_Multimedia_Property1_idx", columnList = "property_Id"),
-        @Index(name = "fk_Property_Multimedia_Multimedia_Type1_idx", columnList = "multimedia_Type_Id")
+        @Index(name = "fk_property_multimedia_property1_idx", columnList = "property_id"),
+        @Index(name = "fk_property_multimedia_multimedia_type1_idx", columnList = "multimedia_type_id")
     }
 )
 public class PropertyMultimedia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false, unique = true)
-    private Long id;
+    @Column(nullable = false, unique = true)
+    private Integer id;
 
-    @Column(name = "Link", length = 500, nullable = false)
+    @Column(length = 500, nullable = false)
     private String link;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "property_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Property_Multimedia_Property1"))
+    @ManyToOne
+    @JoinColumn(name = "property_id", nullable = false, foreignKey = @ForeignKey(name = "fk_property_multimedia_property1"))
     private Property property;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "multimedia_Type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Property_Multimedia_Multimedia_Type1"))
+    @ManyToOne
+    @JoinColumn(name = "multimedia_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_property_multimedia_multimedia_type1"))
     private MultimediaType multimedia_type;
 }

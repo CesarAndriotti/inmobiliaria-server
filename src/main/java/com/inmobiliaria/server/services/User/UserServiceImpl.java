@@ -19,15 +19,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.inmobiliaria.server.dto.User.UserResponse;
 import com.inmobiliaria.server.exceptions.CustomException;
+import com.inmobiliaria.server.mappers.UserMapper;
 import com.inmobiliaria.server.models.User;
-import com.inmobiliaria.server.repositories.Address.AddressRepository;
-import com.inmobiliaria.server.repositories.Agent.AgentRepository;
 import com.inmobiliaria.server.repositories.User.UserRepository;
 import com.inmobiliaria.server.security.JwtUtil;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
+
+    @Autowired
+    private UserMapper userMapper;
 
     // Inyecta el PasswordEncoder (debería ser BCryptPasswordEncoder)
     @Autowired
@@ -37,12 +41,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private Environment env;
 
-    // Repositorios necesarios (usuarios, agentes y direcciones)
-    @Autowired
-    private AgentRepository agentRepository;
-
-    @Autowired
-    private AddressRepository addressRepository;
+    // Repositorios necesarios (usuarios, agentes y direcciones
 
     @Autowired
     private UserRepository userRepository;
@@ -55,132 +54,124 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public Map<String, Object> authenticateUser(String nick, String password) throws CustomException {
         try {
-            /*Paso 1: Obtener AuthenticationManager
-            AuthenticationManager se obtiene desde la configuración de Spring Security 
-            a través de la clase AuthenticationConfiguration. Este administrador se encargará de autenticar al usuario. */
+            //AuthenticationManager se obtiene desde la configuración de Spring Security
+            //Autentica al usuario usando el nick y password proporcionados, y si es exitoso, devuelve un token JWT
             AuthenticationManager authenticationManager = authenticationConfiguration.getAuthenticationManager();
-    
-            /*Paso 2: Se usa el AuthenticationManager para autenticar las credenciales proporcionadas. 
-            Esto se hace mediante la creación de un UsernamePasswordAuthenticationToken con el nick y password del usuario.
-            El AuthenticationManager delega la validación a un UserDetailsService, 
-            que es la función encargada de cargar los detalles del usuario desde la base de datos. */
-            Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(nick, password)
-            );
-    
-            /*Paso 3: Una vez que el usuario ha sido autenticado, auth.getPrincipal() contiene un objeto UserDetails, 
-            que representa al usuario autenticado. A partir de este objeto, 
-            se genera el token JWT mediante el método jwtUtil.generateToken(userDetails). */
+
+            //Autenticación del Usuario
+            Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(nick, password));
+
+            //Obtiene el objeto UserDetails con la info del usuario autenticado
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
+            //Asi genera el token
             String token = jwtUtil.generateToken(userDetails);
-    
-            /*Paso 4: Obtener el Usuario desde el Repositorio
-            Después de la autenticación, se obtiene el usuario real desde el repositorio (userRepository), 
-            buscando por su nick. Esto asegura que los detalles completos del usuario sean cargados. */
+
+            //Obtenet el usuario desde el repo
             User user = userRepository.findByNick(nick)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + nick));
-    
-            /*Paso 5: Generación de Respuesta
-            El token generado y otros detalles del usuario (como nick y userType) se colocan en un Map<String, 
-            Object>, que es la respuesta que se enviará de vuelta al frontend. */
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found: " + nick));
+
+            //Generacion de respuesta con token, nick y tipo de usuario
             Map<String, Object> response = new HashMap<>();
             response.put("token", token);
             response.put("nick", user.getNick());
-            response.put("userType", user.getUser_type().getType());
-    
+            response.put("user_type", user.getUserType().getName());
+
             return response;
-            
+
         } catch (BadCredentialsException e) {
             throw new CustomException("Invalid credentials", HttpStatus.UNAUTHORIZED);
         } catch (Exception e) {
             throw new CustomException("Authentication failed", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
-    /*loadUserByUsername() es llamado internamente por Spring Security 
-    cuando authenticationManager.authenticate() es invocado.
 
-    authenticationManager.authenticate() no consulta directamente la base de datos. 
-    La consulta se realiza en loadUserByUsername() (tu implementación personalizada de UserDetailsService), 
-    que es invocada dentro del proceso de autenticación. */
-    
+    /*
+     * loadUserByUsername() es llamado internamente por Spring Security
+     * cuando authenticationManager.authenticate() es invocado.
+     * 
+     * authenticationManager.authenticate() no consulta directamente la base de
+     * datos.
+     * La consulta se realiza en loadUserByUsername() (tu implementación
+     * personalizada de UserDetailsService),
+     * que es invocada dentro del proceso de autenticación.
+     */
+
     @Override
     public UserDetails loadUserByUsername(String nick) {
-        
-        User user = userRepository.findByNick(nick)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + nick));
 
-        // Devuelve un objeto UserDetails con nick, contraseña cifrada, y lista vacía de roles (puede extenderse)
+        User user = userRepository.findByNick(nick)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + nick));
+
+        // Devuelve un objeto UserDetails con nick, contraseña cifrada, y lista vacía de
+        // roles (puede extenderse)
         return new org.springframework.security.core.userdetails.User(
-            user.getNick(),
-            user.getPassword(),
-            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getUser_type().getType().toUpperCase()))
-        );
+                user.getNick(),
+                user.getPassword(),
+                Collections.singletonList(
+                        new SimpleGrantedAuthority("ROLE_" + user.getUserType().getName().toUpperCase())));
     }
 
     @Override
-    public List<User> getAllUsers() throws CustomException {
+    public List<UserResponse> getAllUsers() throws CustomException {
 
         try {
             List<User> usersDatabase = userRepository.findAll();
-            return usersDatabase;
-        } 
-        catch (DataAccessException e) {
-            
+            return userMapper.toDtoList(usersDatabase);
+        } catch (DataAccessException e) {
+
             throw new CustomException(
-                env.getProperty("data.access-error")+": "+e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
-        }
-        catch(Exception e){
-                throw new CustomException(
-                env.getProperty("unhandled-exception")+": "+e.getMessage(), 
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
+                    env.getProperty("data.access-error") + ": " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception e) {
+            throw new CustomException(
+                    env.getProperty("unhandled-exception") + ": " + e.getMessage(),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @Override
     public User saveUser(User user) throws CustomException {
-        
+
         return userRepository.save(user);
     }
 
-   
+    /*
+     * public List<User> propertiesFilter(Map<String, String> filter, List<User>
+     * users) {
+     * 
+     * for (Map.Entry<String, String> filtro : filter.entrySet()) {
+     * String clave = filtro.getKey();
+     * String valor = filtro.getValue().toLowerCase();
+     * 
+     * switch (clave) {
+     * case "name":
+     * users = users.stream()
+     * .filter(e -> e.getName() != null &&
+     * e.getName().toLowerCase().contains(valor))
+     * .collect(Collectors.toList());
+     * break;
+     * case "lastname":
+     * users = users.stream()
+     * .filter(e -> e.getLastname() != null &&
+     * e.getLastname().toLowerCase().contains(valor))
+     * .collect(Collectors.toList());
+     * break;
+     * case "email":
+     * users = users.stream()
+     * .filter(e -> e.getEmail() != null &&
+     * e.getEmail().toLowerCase().contains(valor))
+     * .collect(Collectors.toList());
+     * break;
+     * case "sector":
+     * 
+     * default:
+     * // Ignorar filtros desconocidos o podrías lanzar excepción si lo preferís
+     * break;
+     * }
+     * }
+     * 
+     * return user;
+     * }
+     */
 
-    /*public List<User> propertiesFilter(Map<String, String> filter, List<User> users) {
-        
-        for (Map.Entry<String, String> filtro : filter.entrySet()) {
-        String clave = filtro.getKey();
-        String valor = filtro.getValue().toLowerCase();
-
-        switch (clave) {
-            case "name":
-            users = users.stream()
-                    .filter(e -> e.getName() != null && e.getName().toLowerCase().contains(valor))
-                    .collect(Collectors.toList());
-                break;
-            case "lastname":
-            users = users.stream()
-                    .filter(e -> e.getLastname() != null && e.getLastname().toLowerCase().contains(valor))
-                    .collect(Collectors.toList());
-                break;
-            case "email":
-            users = users.stream()
-                    .filter(e -> e.getEmail() != null && e.getEmail().toLowerCase().contains(valor))
-                    .collect(Collectors.toList());
-                break;
-            case "sector":
-            
-            default:
-                // Ignorar filtros desconocidos o podrías lanzar excepción si lo preferís
-                break;
-        }
-    }
-
-        return user;
-    }*/
-        
-    }
-
-
+}

@@ -20,14 +20,13 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor  
-@NoArgsConstructor 
-@Table(name = "Historical_Prices",
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "historical_prices",
 
-    indexes = {
-        @Index(name = "fk_Historical_Prices_Price1_idx", columnList = "price_Id")
-    }
-)
+        indexes = {
+                @Index(name = "fk_historical_prices_price1_idx", columnList = "price_id")
+        })
 public class HistoricalPrices {
 
     @Id
@@ -38,10 +37,10 @@ public class HistoricalPrices {
     @Column(nullable = false)
     private Date date;
 
-    @Column(nullable = false, precision = 6, scale = 2)
+    @Column(nullable = false, precision = 11, scale = 2) // Esto se ajusta con precision = 6, scale = 2
     private BigDecimal previous_price;
 
-    @Column(nullable = false, precision = 6, scale = 2)
+    @Column(nullable = false, precision = 11, scale = 2)
     private BigDecimal afterPrice;
 
     @Column(nullable = false)
@@ -49,8 +48,8 @@ public class HistoricalPrices {
 
     @Column(nullable = false)
     private Float after_profit_percentage;
-    
+
     @ManyToOne
-    @JoinColumn(name = "price_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Historical_Prices_Price1"))
+    @JoinColumn(name = "price_id", nullable = false, foreignKey = @ForeignKey(name = "fk_historical_prices_price1"))
     private Price price;
 }

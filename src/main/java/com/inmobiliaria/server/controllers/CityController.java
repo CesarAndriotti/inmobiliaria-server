@@ -7,38 +7,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.inmobiliaria.server.dto.ResponseDto;
+import com.inmobiliaria.server.dto.City.CityResponse;
 import com.inmobiliaria.server.exceptions.CustomException;
-import com.inmobiliaria.server.models.City;
-import com.inmobiliaria.server.repositories.City.CityRepository;
+import com.inmobiliaria.server.services.City.CityServiceImpl;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cites")
+@RequestMapping("/api/cities")
 public class CityController {
 
     @Autowired
-    CityRepository cityRepository;
+    CityServiceImpl cityServiceImpl;
     @Autowired
     Environment env;
 
     @GetMapping("/show-list")
-    public ResponseEntity<ResponseDto> getCityList() throws CustomException{
+    public ResponseEntity<List<CityResponse>> getCityList() throws CustomException{
 
-        List<City> cityList = cityRepository.findAll();
+        List<CityResponse> cityList = cityServiceImpl.getAllCities();
 
-        if (cityList == null) {
-            throw new CustomException(
-                env.getProperty("http.server.internal-server"), 
-                HttpStatus.INTERNAL_SERVER_ERROR
-            );
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto<>(
-                cityList,
-                env.getProperty("http.success.ok"),
-                HttpStatus.OK.value()
-            ));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(cityList);
     }
 }

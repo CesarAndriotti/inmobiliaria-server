@@ -1,0 +1,51 @@
+1. Requerimientos de presencia / no nulos
+
+@NotNull → El campo no puede ser nulo (pero puede ser vacío si es String).
+
+@NotEmpty → No puede ser nulo ni vacío (para String, Collection, Map, Array).
+
+@NotBlank → Para Strings: no nulo, no vacío, no solo espacios en blanco.
+
+
+2. Tamaño o rango
+
+@Size(min = X, max = Y) → Para Strings, Collections, Arrays; define tamaño mínimo y máximo.
+
+@Min(value = X) → Para números: valor mínimo permitido.
+
+@Max(value = Y) → Para números: valor máximo permitido.
+
+@Positive → Mayor que 0.
+
+@PositiveOrZero → Mayor o igual a 0.
+
+@Negative → Menor que 0.
+
+@NegativeOrZero → Menor o igual a 0.
+
+
+3. Formatos específicos
+
+@Email → Validación de formato de correo electrónico.
+
+@Pattern(regexp = "regex") → Cualquier patrón de regex que quieras validar.
+
+@Past → Fecha pasada (por ejemplo, dateOfBirth).
+
+@PastOrPresent → Fecha pasada o presente.
+
+@Future → Fecha futura.
+
+@FutureOrPresent → Fecha futura o presente.
+
+
+4. Listas y colecciones
+
+@Size(min = X, max = Y) → Para asegurar cantidad mínima/máxima de elementos.
+
+@NotEmpty → La colección no puede estar vacía.
+
+
+5. Combinaciones / anidamiento
+
+@Valid → Se usa en objetos anidados (DTOs dentro de DTOs) para que se apliquen sus validaciones internas.

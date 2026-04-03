@@ -18,10 +18,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Operation_Document",
+@Table(name = "operation_document",
 
     indexes = {
-        @Index(name = "fk_Operation_Document_Operation1", columnList = "operation_Id"),
+        @Index(name = "fk_operation_document_operation1_idx", columnList = "operation_id"),
+        @Index(name = "fk_operation_document_document_type1_idx", columnList = "document_type_id")
     }
 )
 public class OperationDocument {
@@ -35,6 +36,10 @@ public class OperationDocument {
     private String link;
 
     @ManyToOne
-    @JoinColumn(name = "operationId", nullable = false, foreignKey = @ForeignKey(name = "Document_Operation_Operation1"))
+    @JoinColumn(name = "operation_id", nullable = false, foreignKey = @ForeignKey(name = "fk_operation_document_operation1"))
     private Operation operation;
+
+    @ManyToOne
+    @JoinColumn(name = "document_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_operation_document_document_type1"))
+    private DocumentType documentType;
 }

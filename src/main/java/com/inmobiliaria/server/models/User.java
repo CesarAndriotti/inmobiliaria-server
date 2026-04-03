@@ -17,33 +17,32 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor  
-@NoArgsConstructor 
-@Table(name = "User",
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "user",
 
-    indexes = {
-        @Index(name = "fk_User_Agent1_idx", columnList = "agent_Id"),
-        @Index(name = "fk_User_User_Type1_idx", columnList = "user_Type_Id"),
-    }
-)
+                indexes = {
+                                @Index(name = "fk_user_agent1_idx", columnList = "agent_id"),
+                                @Index(name = "fk_user_user_type1_idx", columnList = "user_type_id"),
+                })
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
-    private int id;
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(nullable = false)
+        private Integer id;
 
-    @Column(nullable = false, length = 60)
-    private String nick;
+        @Column(nullable = false, length = 60)
+        private String nick;
 
-    @Column(nullable = false, length = 500)
-    private String password;
+        @Column(nullable = false, length = 500)
+        private String password;
 
-    @OneToOne
-    @JoinColumn(name = "agent_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_User_Agent1"))
-    private Agent agent;
+        @OneToOne
+        @JoinColumn(name = "agent_id", nullable = false, foreignKey = @ForeignKey(name = "fk_user_agent1"))
+        private Agent agent;
 
-    @ManyToOne
-    @JoinColumn(name = "user_Type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_User_User_Type1"))
-    private UserType user_type;
+        @ManyToOne
+        @JoinColumn(name = "user_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_user_user_type1"))
+        private UserType userType;
 }

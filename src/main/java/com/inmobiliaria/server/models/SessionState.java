@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor  
-@NoArgsConstructor 
-@Table(name = "Session_State")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "session_state")
 public class SessionState {
 
     @Id
@@ -22,6 +22,6 @@ public class SessionState {
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false, length = 45)
-    private String state;
+    @Column(nullable = false, length = 60)
+    private String name;
 }

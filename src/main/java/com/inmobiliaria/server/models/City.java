@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "City",
+@Table(name = "city",
 
     indexes = {
-        @Index(name = "fk_City_State1_idx", columnList = "State_Id")
+        @Index(name = "fk_city_state1_idx", columnList = "state_id")
     }
 )
 public class City {
@@ -31,11 +31,11 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private int id;
-    @Column(name = "name", nullable = false, length = 100)
+    private Integer id;
+    @Column(nullable = false, length = 100)
     private String name;
     @ManyToOne
-    @JoinColumn(name = "state_id", nullable = false, foreignKey = @ForeignKey(name = "fk_City_State1")) 
+    @JoinColumn(nullable = false, foreignKey = @ForeignKey(name = "fk_city_state1")) 
     private State state;
 
 }

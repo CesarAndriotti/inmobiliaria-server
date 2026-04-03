@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Operation_State")
+@Table(name = "operation_state")
 public class OperationState {
 
     @Id
@@ -23,5 +23,5 @@ public class OperationState {
     private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String state;
+    private String name;
 }

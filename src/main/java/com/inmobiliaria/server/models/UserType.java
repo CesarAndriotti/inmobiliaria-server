@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor  
-@NoArgsConstructor 
-@Table(name = "User_Type")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "user_type")
 public class UserType {
 
     @Id
@@ -22,6 +22,6 @@ public class UserType {
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false, length = 45)
-    private String type;
+    @Column(nullable = false, length = 60)
+    private String name;
 }

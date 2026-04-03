@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Money_Type")
+@Table(name = "money_type")
 public class MoneyType {
 
     @Id
@@ -23,5 +23,5 @@ public class MoneyType {
     private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String type;
+    private String name;
 }

@@ -15,23 +15,24 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.sql.Date;
 
 @Entity
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Customer",
+@Table(name = "customer",
     
     indexes = {
-        @Index(name = "fk_Customer_Customer_Type1_idx", columnList = "customer_Type_Id"),
-        @Index(name = "fk_Customer_Address1_idx", columnList = "address_Id"),
-        @Index(name = "key_Customer_Name", columnList = "name"),
-        @Index(name = "key_Customer_Lastname", columnList = "lastname")
+        @Index(name = "fk_customer_customer_type1_idx", columnList = "customer_type_id"),
+        @Index(name = "fk_customer_address1_idx", columnList = "address_id"),
+        @Index(name = "key_customer_name", columnList = "name"),
+        @Index(name = "key_customer_lastname", columnList = "lastname")
     },
     uniqueConstraints = {
-        @UniqueConstraint(name = "unique_Customer_IdentificationNumber", columnNames = "identificationNumber")
+        @UniqueConstraint(name = "unique_customer_identification_number", columnNames = "identification_number"),
+        @UniqueConstraint(name = "email_unique", columnNames = "email"),
+        @UniqueConstraint(name = "phone_number_unique", columnNames = "phone_number"),
     }
 )
 public class Customer {
@@ -56,14 +57,14 @@ public class Customer {
     @Column(nullable = false, length = 60, unique = true)
     private String phoneNumber;
 
-    @Column(nullable = false, length = 60, unique = true)
+    @Column(nullable = false, length = 100, unique = true)
     private String email;
 
     @ManyToOne
-    @JoinColumn(name = "customer_Type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Customer_Customer_Type1"))
+    @JoinColumn(name = "customer_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_customer_customer_type1"))
     private CustomerType customerType;
 
     @OneToOne
-    @JoinColumn(name = "address_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Customer_Address1"))
+    @JoinColumn(name = "address_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_customer_address1"))
     private Address address;
 }

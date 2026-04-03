@@ -18,11 +18,11 @@ import jakarta.persistence.ForeignKey;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Operation_Details",
+@Table(name = "operation_details",
 
     indexes = {
-        @Index(name = "fk_Operation_Details_Operation1_idx", columnList = "operation_Id"),
-        @Index(name = "fk_Operation_Details_Customer1_idx", columnList = "customer_Id")
+        @Index(name = "fk_operation_details_operation1_idx", columnList = "operation_id"),
+        @Index(name = "fk_operation_details_property1_idx", columnList = "property_id")
     }
 )
 
@@ -34,10 +34,10 @@ public class OperationDetails {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "operation_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Operation_Operation1"))
+    @JoinColumn(name = "operation_id", nullable = false, foreignKey = @ForeignKey(name = "fk_operation_operation1"))
     private Operation operation;
 
     @ManyToOne
-    @JoinColumn(name = "customer_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Operation_customer1"))
-    private Customer customer;
+    @JoinColumn(name = "property_id", nullable = false, foreignKey = @ForeignKey(name = "fk_operation_details_property1"))
+    private Property property;
 }

@@ -14,7 +14,7 @@ import jakarta.persistence.Column;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Construction_Type")
+@Table(name = "construction_type")
 public class ConstructionType {
 
     @Id
@@ -22,6 +22,6 @@ public class ConstructionType {
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false, length = 100)
-    private String type;
+    @Column(nullable = false, length = 60)
+    private String name;
 }

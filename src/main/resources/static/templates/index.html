@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${pageTitle}">Título por defecto</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+    <header>
+        <h1 th:text="${titulo}">Título de ejemplo</h1>
+    </header>
+
+    <main>
+        <p th:text="'Hola, ' + ${usuario.nombre} + '!'">Hola, usuario!</p>
+
+        <ul>
+            <li th:each="item : ${listaItems}" th:text="${item}">Item</li>
+        </ul>
+    </main>
+
+    <footer>
+        <p>© 2025 - Mi Sitio Web</p>
+    </footer>
+
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

@@ -18,11 +18,11 @@ import jakarta.persistence.Column;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Construction",
+@Table(name = "construction",
 
     indexes = {
-        @Index(name = "fk_Construction_Property1_idx", columnList = "property_Id"),
-        @Index(name = "fk_Construction_Construction_Type1_idx", columnList = "construction_Type_Id")
+        @Index(name = "fk_construction_property1_idx", columnList = "property_id"),
+        @Index(name = "fk_construction_construction_type1_idx", columnList = "construction_type_id")
     }
 )
 public class Construction {
@@ -60,10 +60,10 @@ public class Construction {
     private Byte barbecue;
 
     @ManyToOne
-    @JoinColumn(name = "property_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Construction_Property1"))
+    @JoinColumn(name = "property_id", nullable = false, foreignKey = @ForeignKey(name = "fk_construction_property1"))
     private Property property;
 
     @ManyToOne
-    @JoinColumn(name = "construction_Type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Construction_Construction_Type1"))
+    @JoinColumn(name = "construction_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_construction_construction_type1"))
     private ConstructionType construction_type;
 }

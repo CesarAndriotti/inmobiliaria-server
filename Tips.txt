@@ -1,0 +1,6 @@
+Los dto son contratos y los contratos deben ser:
+
+• Estables
+• Específicos
+• Pequeños
+• Orientados a uso

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Multimedia_Type")
+@Table(name = "multimedia_type")
 public class MultimediaType {
 
     @Id
@@ -23,5 +23,5 @@ public class MultimediaType {
     private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String type;
+    private String name;
 }

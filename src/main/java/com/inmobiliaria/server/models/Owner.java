@@ -19,11 +19,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Owner",
+@Table(name = "owner",
 
     indexes = {
-        @Index(name = "fk_Owner_Property1_idx", columnList = "propertyId"),
-        @Index(name = "fk_Owner_Customer1_idx", columnList = "customer_Id")
+        @Index(name = "fk_owner_property1_idx", columnList = "property_id"),
+        @Index(name = "fk_owner_customer1_idx", columnList = "customer_id")
     }
 )
 public class Owner {
@@ -40,10 +40,10 @@ public class Owner {
     private Date to_date;
 
     @ManyToOne
-    @JoinColumn(name = "property_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Owner_Property1"))
+    @JoinColumn(name = "property_id", nullable = false, foreignKey = @ForeignKey(name = "fk_owner_property1"))
     private Property property;
 
     @ManyToOne
-    @JoinColumn(name = "customer_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Owner_Customer1"))
+    @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "fk_owner_customer1"))
     private Customer customer;
 }

@@ -1,6 +1,7 @@
 package com.inmobiliaria.server.models;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,11 +21,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Session",
+@Table(name = "session",
 
     indexes = {
-        @Index(name = "fk_Session_User1_idx", columnList = "user_Id"),
-        @Index(name = "fk_Session_Session_State1_idx", columnList = "session_State_Id")
+        @Index(name = "fk_session_user1_idx", columnList = "user_id"),
+        @Index(name = "fk_session_session_state1_idx", columnList = "session_state_id")
     }
 )
 public class Session {
@@ -35,16 +36,16 @@ public class Session {
     private Integer id;
 
     @Column(nullable = false)
-    private Date start_datetime;
+    private LocalDateTime start_datetime;
 
-    @Column(nullable = false)
-    private Date finish_datetime;
+    @Column(nullable = true)
+    private LocalDateTime finish_datetime;
 
     @ManyToOne
-    @JoinColumn(name = "user_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Session_User1"))
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_session_user1"))
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "session_State_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Session_Session_State1"))
-    private SessionState session_state;
+    @JoinColumn(name = "session_state_id", nullable = false, foreignKey = @ForeignKey(name = "fk_session_session_state1"))
+    private SessionState sessionState;
 }

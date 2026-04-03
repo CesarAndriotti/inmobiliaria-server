@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Publication",
+@Table(name = "publication",
 
     indexes = {
-        @Index(name = "fk_Publication_Property1_idx", columnList = "property_Id"),
-        @Index(name = "fk_Publication_Publication_State1_idx", columnList = "publication_State_Id"),
-        @Index(name = "fk_Publication_Publication_Type1_idx", columnList = "publication_Type_Id")
+        @Index(name = "fk_publication_property1_idx", columnList = "property_id"),
+        @Index(name = "fk_publication_publication_state1_idx", columnList = "publication_state_id"),
+        @Index(name = "fk_publication_publication_type1_idx", columnList = "publication_type_id")
     }
 )
 public class Publication {
@@ -42,14 +42,14 @@ public class Publication {
     private Date finish_date;
 
     @ManyToOne
-    @JoinColumn(name = "property_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Publication_Property1"))
+    @JoinColumn(name = "property_id", nullable = false, foreignKey = @ForeignKey(name = "fk_publication_property1"))
     private Property property;
 
     @ManyToOne
-    @JoinColumn(name = "publication_State_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Publication_Publication_State1"))
+    @JoinColumn(name = "publication_state_id", nullable = false, foreignKey = @ForeignKey(name = "fk_publication_publication_state1"))
     private PublicationState publication_state;
 
     @ManyToOne
-    @JoinColumn(name = "publication_Type_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Publication_Publication_Type1"))
+    @JoinColumn(name = "publication_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_publication_publication_type1"))
     private Publication_Type publication_type;
 }

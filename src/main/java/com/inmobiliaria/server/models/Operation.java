@@ -19,11 +19,11 @@ import jakarta.persistence.ForeignKey;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Operation",
+@Table(name = "operation",
     
     indexes = {
-        @Index(name = "fk_Operation_Operation_Type1_idx" , columnList = "operation_Type_Id"),
-        @Index (name = "fk_Operation_Operation_State1_idx" , columnList = "operation_State_Id")
+        @Index(name = "fk_operation_operation_type1_idx" , columnList = "operation_type_id"),
+        @Index (name = "fk_operation_operation_state1_idx" , columnList = "operation_state_id")
     }
 )
 public class Operation {
@@ -33,21 +33,17 @@ public class Operation {
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 60)
     private String operation_code;
 
     @Column(nullable = false)
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "operation_Type_Id", nullable = false)
+    @JoinColumn(name = "operation_type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_operation_operation_type1"))
     private OperationType operation_type;
 
     @ManyToOne
-    @JoinColumn(name = "operation_State_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Operation_Operation_State1"))
+    @JoinColumn(name = "operation_state_id", nullable = false, foreignKey = @ForeignKey(name = "fk_operation_operation_state1"))
     private OperationState operation_state;
-
-    @ManyToOne
-    @JoinColumn(name = "property_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Opertation_Property1"))
-    private Property property;
 }

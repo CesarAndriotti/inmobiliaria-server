@@ -12,16 +12,16 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor  
-@NoArgsConstructor 
-@Table(name="Property_Type")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "property_type")
 public class PropertyType {
-    
-    @Id //Indicamos cual es el Id
+
+    @Id // Indicamos cual es el Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String type;
+    private String name;
 }

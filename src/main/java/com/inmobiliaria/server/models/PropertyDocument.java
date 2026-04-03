@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Property_Document", 
+@Table(name = "property_document", 
 
     indexes = {
-        @Index(name = "fk_Property_Document_Property1_idx", columnList = "property_Id")
+        @Index(name = "fk_property_document_property1_idx", columnList = "property_id")
     }
 )
 public class PropertyDocument {
@@ -35,6 +35,6 @@ public class PropertyDocument {
     private String link;
 
     @OneToOne
-    @JoinColumn(name = "property_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Property_Documents_Property1"))
+    @JoinColumn(name = "property_id", nullable = false, foreignKey = @ForeignKey(name = "fk_property_document_property1"))
     private Property property;
 }

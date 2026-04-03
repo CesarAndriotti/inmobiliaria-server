@@ -12,9 +12,9 @@ import jakarta.persistence.Column;
 
 @Entity
 @Data
-@AllArgsConstructor  
-@NoArgsConstructor 
-@Table(name = "Customer_Type")
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "customer_type")
 public class CustomerType {
 
     @Id
@@ -23,6 +23,5 @@ public class CustomerType {
     private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String type;
+    private String name;
 }
-

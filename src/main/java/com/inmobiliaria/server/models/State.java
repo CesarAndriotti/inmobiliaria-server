@@ -20,24 +20,24 @@ import jakarta.persistence.ManyToOne;;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "State", 
+@Table(name = "state", 
     
     indexes = {
-        @Index(name = "fk_State_Country1_idx", columnList = "Country_Id")
+        @Index(name = "fk_state_country1_idx", columnList = "country_id")
     }
 )
 public class State {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)  
+    @Column(nullable = false)  
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", nullable = false, foreignKey = @ForeignKey(name = "fk_State_Country1")) 
+    @JoinColumn(name = "country_id", nullable = false, foreignKey = @ForeignKey(name = "fk_state_country1")) 
     private Country country;
 
 }

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Publication_Type")
+@Table(name = "publication_type")
 public class Publication_Type {
 
     @Id
@@ -23,5 +23,5 @@ public class Publication_Type {
     private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String type;
+    private String name;
 }

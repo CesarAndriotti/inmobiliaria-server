@@ -10,21 +10,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="Agent_State")
-@Data  
-@NoArgsConstructor 
+@Table(name = "agent_state")
+@Data
+@NoArgsConstructor
 public class AgentState {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 60)
-    private String state;
-
-    public AgentState(String state) {
-        this.state = state;
-    }
-
+    private String name;
 }

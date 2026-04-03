@@ -1,7 +1,5 @@
 package com.inmobiliaria.server.models;
 
-import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -20,10 +18,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor  
 @NoArgsConstructor 
-@Table(name = "Address", 
+@Table(name = "address", 
 
     indexes = {
-        @Index(name = "fk_Address_City1_idx", columnList = "City_Id"),
+        @Index(name = "fk_address_city1_idx", columnList = "city_id"),
     }
 )
 public class Address { 
@@ -31,7 +29,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private int id;
+    private Integer id;
 
     @Column(name = "street_name", nullable = false, length = 100)
     private String streetName;
@@ -40,12 +38,6 @@ public class Address {
     private String number;
 
     @ManyToOne
-    @JoinColumn(name = "city_Id", nullable = false, foreignKey = @ForeignKey(name = "fk_Address_City1"))
+    @JoinColumn(name = "city_id", nullable = false, foreignKey = @ForeignKey(name = "fk_address_city1"))
     private City city;
-
-    public Address orElseGet(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orElseGet'");
-    }
-
 }
